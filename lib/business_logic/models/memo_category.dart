@@ -1,0 +1,42 @@
+import 'memo.dart';
+
+class MemoCategory {
+  final int id;
+  String title;
+  int sortNo;
+  final List<Memo> memos;
+
+  MemoCategory(
+      {required this.id,
+      required this.title,
+      required this.memos,
+      required this.sortNo});
+
+  factory MemoCategory.fromMap(Map<String, dynamic> el, List<Memo> ms) =>
+      MemoCategory(
+        id: el["id"],
+        title: el["title"],
+        sortNo: el["sort_no"],
+        memos: ms.where((i) => (i.categoryID == el["id"])).toList(),
+      );
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'sort_no': sortNo,
+    };
+  }
+
+  int get memoCount {
+    return memos.length;
+  }
+
+  Memo getMemoAt(int idx) {
+    return memos[idx];
+  }
+
+  Memo getMemoByID(int id) {
+    return memos.firstWhere((m) => m.id == id);
+  }
+}
