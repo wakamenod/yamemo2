@@ -65,7 +65,7 @@ class _MemoListScreenState extends State<MemoListScreen>
                     context,
                     PageRouteBuilder(
                       pageBuilder: (context, anim1, anim2) =>
-                          MemoDetailScreen(model: _model),
+                          MemoDetailScreen(model: _model, screenType: ScreenType.add,),
                       transitionDuration: const Duration(seconds: 0),
                     ),
                   );

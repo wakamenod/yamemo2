@@ -12,6 +12,12 @@ class MemoCategory {
       required this.memos,
       required this.sortNo});
 
+  MemoCategory.empty()
+      : id = 0,
+        title = '',
+        sortNo = 0,
+        memos = [];
+
   factory MemoCategory.fromMap(Map<String, dynamic> el, List<Memo> ms) =>
       MemoCategory(
         id: el["id"],

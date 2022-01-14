@@ -40,13 +40,13 @@ class MemoScreenViewModel extends ChangeNotifier {
     return _categories[idx];
   }
 
-  MemoCategory? getCategoryByID(int categoryID) {
+  MemoCategory getCategoryByID(int categoryID) {
     for (var category in _categories) {
       if (category.id == categoryID) {
         return category;
       }
     }
-    return null;
+    return MemoCategory.empty();
   }
 
   Future deleteCategory(MemoCategory category) async {
@@ -70,8 +70,11 @@ class MemoScreenViewModel extends ChangeNotifier {
     if (cat == null) {
       throw AssertionError();
     }
-
-    await _memoService.deleteMemo(memo.id);
+    final memoId = memo.id;
+    if (memoId == null) {
+      return;
+    }
+    await _memoService.deleteMemo(memoId);
     cat.memos.remove(memo);
     notifyListeners();
   }
@@ -80,8 +83,8 @@ class MemoScreenViewModel extends ChangeNotifier {
     return _categories;
   }
 
-  MemoCategory? get selectedCategory {
-    return _selectedCategory;
+  MemoCategory get selectedCategory {
+    return _selectedCategory ?? MemoCategory.empty();
   }
 
   bool isSelectedCategory(MemoCategory c) {
@@ -131,7 +134,7 @@ class MemoScreenViewModel extends ChangeNotifier {
   Future addMemo(String content) async {
     var selectedCategoryID = _selectedCategory!.id;
     var res = await _memoService
-        .addMemo(Memo(id: 0, content: content, categoryID: selectedCategoryID));
+        .addMemo(Memo(content: content, categoryID: selectedCategoryID));
     _selectedCategory!.memos.add(res);
     notifyListeners();
   }
@@ -155,8 +158,8 @@ class MemoScreenViewModel extends ChangeNotifier {
     });
   }
 
-  Memo? get selectedMemo {
-    return _selectedMemo;
+  Memo get selectedMemo {
+    return _selectedMemo ?? Memo.empty();
   }
 
   void selectMemo(Memo memo) {

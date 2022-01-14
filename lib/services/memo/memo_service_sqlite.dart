@@ -9,9 +9,9 @@ class MemoServiceSQLite extends MemoService {
   static const _tblMemo = "Memo";
   static const _tblCategory = "Category";
 
-  List<Memo>? _memos;
-  List<MemoCategory>? _categories;
-  Database? _database;
+  late Future<List<Memo>> _memos = initMemos();
+  late Future<List<MemoCategory>> _categories = initCategories();
+  late final Future<Database> _database = initDB();
 
   static final migrationScripts = {
     '2': [
@@ -21,29 +21,23 @@ class MemoServiceSQLite extends MemoService {
     // '3' : ['ALTER TABLE memo ADD COLUMN update_at TIMESTAMP;'],
   };
 
-  Future<Database> get database async {
-    if (_database != null) return _database!;
+  // Database _getDatabase() {
+  //   return initDB().then((value) => value);
+  // }
 
-    Database d = await initDB();
-    _database = d;
-    return d;
+  Future<Database> get database async {
+    return _database;
   }
 
   Future<List<Memo>> get memos async {
-    if (_memos != null) return _memos!;
-
-    final db = await database;
-    var res = await db.query(_tblMemo, orderBy: "id");
-
-    List<Memo> list =
-        res.isNotEmpty ? res.map((c) => Memo.fromMap(c)).toList() : [];
-
-    return _memos = list;
+    return _memos;
   }
 
   Future<List<MemoCategory>> get categories async {
-    if (_categories != null) return _categories!;
+    return _categories;
+  }
 
+  Future<List<MemoCategory>> initCategories() async {
     final db = await database;
     var res = await db.query(_tblCategory, orderBy: "sort_no");
 
@@ -52,8 +46,16 @@ class MemoServiceSQLite extends MemoService {
         ? res.map((c) => MemoCategory.fromMap(c, listMemo)).toList()
         : [];
 
-    LOG.info('get categories list=$list');
-    return _categories = list;
+    return list;
+  }
+
+  Future<List<Memo>> initMemos() async {
+    final db = await database;
+    var res = await db.query(_tblMemo, orderBy: "id");
+
+    List<Memo> list =
+        res.isNotEmpty ? res.map((c) => Memo.fromMap(c)).toList() : [];
+    return list;
   }
 
   Future<Database> initDB() async {
@@ -94,8 +96,8 @@ class MemoServiceSQLite extends MemoService {
   @override
   Future<List<MemoCategory>> getAllCategories(bool forceDiskFetch) async {
     if (forceDiskFetch) {
-      _categories = null;
-      _memos = null;
+      _categories = initCategories();
+      _memos = initMemos();
     }
     return categories;
   }
@@ -109,7 +111,7 @@ class MemoServiceSQLite extends MemoService {
   Future<MemoCategory> addCategory(MemoCategory category) async {
     final db = await database;
 
-    category.sortNo = _categories!.last.sortNo + 1;
+    category.sortNo = (await categories).last.sortNo + 1;
 
     int id = await db.insert(
       _tblCategory,

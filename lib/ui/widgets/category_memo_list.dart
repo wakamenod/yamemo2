@@ -25,7 +25,7 @@ class CategoryMemoList extends StatelessWidget {
       color: kBaseBgColor,
       child: ListView.builder(
           shrinkWrap: true,
-          itemCount: category!.memoCount,
+          itemCount: category.memoCount,
           itemBuilder: (BuildContext ctx, int idx) {
             final Memo memo = category.getMemoAt(idx);
 
@@ -48,7 +48,7 @@ class CategoryMemoList extends StatelessWidget {
                             context,
                             PageRouteBuilder(
                               pageBuilder: (context, anim1, anim2) =>
-                                  MemoDetailScreen(model: _model),
+                                  MemoDetailScreen(model: _model, screenType: ScreenType.update,),
                               transitionDuration: const Duration(seconds: 0),
                             ));
                         _model.deselectMemo();

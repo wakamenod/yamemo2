@@ -7,13 +7,38 @@ import 'package:yamemo2/ui/views/add_category_screen.dart';
 import 'package:yamemo2/ui/views/memo_detail/memo_detail_screen.dart';
 import 'package:yamemo2/yamemo.i18n.dart';
 
-abstract class MemoDetailScreenState extends State<MemoDetailScreen> {
+class MemoDetailScreenState extends State<MemoDetailScreen> {
   final TextEditingController controller = TextEditingController();
-  final MemoScreenViewModel model;
+  late void Function() onTapDone;
 
-  MemoDetailScreenState({required this.model});
+  MemoDetailScreenState();
 
-  void onTapDone();
+  @override
+  void initState() {
+    super.initState();
+    onTapDone = getOnTapDone();
+  }
+
+  void Function() getOnTapDone() {
+    switch (widget.screenType) {
+      case ScreenType.add:
+        return () {
+          widget.model.addMemo(controller.text).catchError((e) {
+            Fluttertoast.showToast(
+                msg: "Unexpected Error.".i18n,
+                backgroundColor: Colors.redAccent);
+          });
+        };
+      case ScreenType.update:
+        return () {
+          widget.model.updateSelectedMemo(controller.text).catchError((e) {
+            Fluttertoast.showToast(
+                msg: "Unexpected Error.".i18n,
+                backgroundColor: Colors.redAccent);
+          });
+        };
+    }
+  }
 
   @override
   void dispose() {
@@ -23,8 +48,11 @@ abstract class MemoDetailScreenState extends State<MemoDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.screenType == ScreenType.update) {
+      controller.text = widget.model.selectedMemo.content;
+    }
     return ChangeNotifierProvider.value(
-      value: model,
+      value: widget.model,
       child: Consumer<MemoScreenViewModel>(builder: (context, value, child) {
         return Scaffold(
           appBar: AppBar(
@@ -50,7 +78,7 @@ abstract class MemoDetailScreenState extends State<MemoDetailScreen> {
                     },
                     child: Row(
                       children: [
-                        Text('${value.selectedCategory!.title} '),
+                        Text('${value.selectedCategory.title} '),
                         const Icon(Icons.arrow_drop_down),
                       ],
                     ),
@@ -103,8 +131,9 @@ abstract class MemoDetailScreenState extends State<MemoDetailScreen> {
               labelStyle:
                   TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
             ),
-            validator: (value) =>
-                value!.isNotEmpty ? null : 'content can\'t be empty',
+            validator: (value) => (value != null && value.isNotEmpty)
+                ? null
+                : 'content can\'t be empty',
             style: const TextStyle(fontSize: 20.0, color: Colors.black87),
             // onChanged: (content) => _content = content,
           ),

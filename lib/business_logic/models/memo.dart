@@ -1,5 +1,5 @@
 class Memo {
-  final int id;
+  int? id;
   int categoryID;
   String content;
 
@@ -9,6 +9,11 @@ class Memo {
         content: el["content"] == null ? '' : el['content'],
       );
 
+  Memo.empty()
+      : id = 0,
+        categoryID = 0,
+        content = '';
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -17,5 +22,5 @@ class Memo {
     };
   }
 
-  Memo({required this.id, required this.categoryID, required this.content});
+  Memo({this.id, required this.categoryID, required this.content});
 }
