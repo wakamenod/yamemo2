@@ -51,7 +51,7 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
                   onPressed: widget.model.categoryCount <= 1
                       ? null
                       : () {
-                          Navigator.of(widget.baseContext).pop(true);
+                          Navigator.of(context).pop(true);
                           showDeleteCategoryConfirmDialog(
                               context, widget.baseContext, widget.category);
                         },
@@ -157,8 +157,8 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
                         })
                         .catchError((e) {})
                         .whenComplete(() {
-                          ScaffoldMessenger.of(context).showSnackBar(sb);
                           Navigator.of(dialogContext).pop(true);
+                          ScaffoldMessenger.of(dialogContext).showSnackBar(sb);
                         });
                   },
                   child: Text("DELETE".i18n)),
