@@ -48,7 +48,10 @@ class CategoryMemoList extends StatelessWidget {
                             context,
                             PageRouteBuilder(
                               pageBuilder: (context, anim1, anim2) =>
-                                  MemoDetailScreen(model: _model, screenType: ScreenType.update,),
+                                  MemoDetailScreen(
+                                model: _model,
+                                screenType: ScreenType.update,
+                              ),
                               transitionDuration: const Duration(seconds: 0),
                             ));
                         _model.deselectMemo();

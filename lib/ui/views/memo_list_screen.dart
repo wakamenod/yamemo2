@@ -64,8 +64,10 @@ class _MemoListScreenState extends State<MemoListScreen>
                   Navigator.push(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (context, anim1, anim2) =>
-                          MemoDetailScreen(model: _model, screenType: ScreenType.add,),
+                      pageBuilder: (context, anim1, anim2) => MemoDetailScreen(
+                        model: _model,
+                        screenType: ScreenType.add,
+                      ),
                       transitionDuration: const Duration(seconds: 0),
                     ),
                   );

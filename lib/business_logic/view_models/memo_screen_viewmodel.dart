@@ -22,11 +22,9 @@ class MemoScreenViewModel extends ChangeNotifier {
       addCategory("New Category");
     }
 
-    if (_isCategorySelected()) {
-      _selectedCategory = getCategoryByID(_selectedCategory.id);
-    } else {
-      _selectedCategory = _categories[0];
-    }
+    _selectedCategory = _isCategorySelected()
+        ? getCategoryByID(_selectedCategory.id)
+        : _categories[0];
 
     isLoading = false;
     notifyListeners();
@@ -56,11 +54,9 @@ class MemoScreenViewModel extends ChangeNotifier {
   Future deleteCategory(MemoCategory category) async {
     var indexOfCategory = _categories.indexOf(category);
     MemoCategory nextSelectedCategory;
-    if (indexOfCategory == categoryCount - 1) {
-      nextSelectedCategory = getCategoryAt(indexOfCategory - 1);
-    } else {
-      nextSelectedCategory = getCategoryAt(indexOfCategory + 1);
-    }
+    nextSelectedCategory = indexOfCategory == categoryCount - 1
+        ? getCategoryAt(indexOfCategory - 1)
+        : getCategoryAt(indexOfCategory + 1);
     await _memoService.deleteMemoByCategoryID(category.id);
     await _memoService.deleteCategory(category);
 
