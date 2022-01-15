@@ -1,6 +1,8 @@
 import 'memo.dart';
 
 class MemoCategory {
+  static final MemoCategory nullCategory = MemoCategory._empty();
+
   final int id;
   String title;
   int sortNo;
@@ -12,7 +14,7 @@ class MemoCategory {
       required this.memos,
       required this.sortNo});
 
-  MemoCategory.empty()
+  MemoCategory._empty()
       : id = 0,
         title = '',
         sortNo = 0,

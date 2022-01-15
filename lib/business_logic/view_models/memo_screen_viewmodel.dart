@@ -10,8 +10,8 @@ class MemoScreenViewModel extends ChangeNotifier {
   List<MemoCategory> _categories = [];
   bool isLoading = true;
   Future<List<MemoCategory>>? futureCategories;
-  MemoCategory? _selectedCategory;
-  Memo? _selectedMemo;
+  MemoCategory _selectedCategory = MemoCategory.nullCategory;
+  Memo _selectedMemo = Memo.nullMemo;
 
   void loadData() async {
     LOG.info('loadData');
@@ -22,14 +22,18 @@ class MemoScreenViewModel extends ChangeNotifier {
       addCategory("New Category");
     }
 
-    if (_selectedCategory == null) {
-      _selectedCategory = _categories[0];
+    if (_isCategorySelected()) {
+      _selectedCategory = getCategoryByID(_selectedCategory.id);
     } else {
-      _selectedCategory = getCategoryByID(_selectedCategory!.id);
+      _selectedCategory = _categories[0];
     }
 
     isLoading = false;
     notifyListeners();
+  }
+
+  bool _isCategorySelected() {
+    return _selectedCategory == MemoCategory.nullCategory;
   }
 
   int get categoryCount {
@@ -46,7 +50,7 @@ class MemoScreenViewModel extends ChangeNotifier {
         return category;
       }
     }
-    return MemoCategory.empty();
+    return MemoCategory.nullCategory;
   }
 
   Future deleteCategory(MemoCategory category) async {
@@ -66,14 +70,12 @@ class MemoScreenViewModel extends ChangeNotifier {
   }
 
   Future deleteMemo(Memo memo) async {
-    var cat = getCategoryByID(memo.categoryID);
-    if (cat == null) {
-      throw AssertionError();
-    }
     final memoId = memo.id;
     if (memoId == null) {
       return;
     }
+
+    var cat = getCategoryByID(memo.categoryID);
     await _memoService.deleteMemo(memoId);
     cat.memos.remove(memo);
     notifyListeners();
@@ -84,7 +86,7 @@ class MemoScreenViewModel extends ChangeNotifier {
   }
 
   MemoCategory get selectedCategory {
-    return _selectedCategory ?? MemoCategory.empty();
+    return _selectedCategory;
   }
 
   bool isSelectedCategory(MemoCategory c) {
@@ -92,8 +94,7 @@ class MemoScreenViewModel extends ChangeNotifier {
   }
 
   int get indexOfSelectedCategory {
-    if (_selectedCategory == null) return 0;
-    return _categories.indexOf(_selectedCategory!);
+    return _categories.indexOf(_selectedCategory);
   }
 
   void selectCategoryAt(int index) {
@@ -104,7 +105,7 @@ class MemoScreenViewModel extends ChangeNotifier {
     selectCategory(getCategoryByID(id));
   }
 
-  void selectCategory(MemoCategory? category) {
+  void selectCategory(MemoCategory category) {
     _selectedCategory = category;
     notifyListeners();
   }
@@ -118,33 +119,33 @@ class MemoScreenViewModel extends ChangeNotifier {
   }
 
   Future updateCategory(String title, int sortNo) async {
-    if (sortNo != _selectedCategory!.sortNo) {
-      final from = _selectedCategory!.sortNo;
+    if (sortNo != _selectedCategory.sortNo) {
+      final from = _selectedCategory.sortNo;
       final to = sortNo;
       await _memoService.updateCategorySortNos(from, to);
     }
 
-    _selectedCategory!.title = title;
-    _selectedCategory!.sortNo = sortNo;
-    await _memoService.updateCategory(_selectedCategory!);
+    _selectedCategory.title = title;
+    _selectedCategory.sortNo = sortNo;
+    await _memoService.updateCategory(_selectedCategory);
 
     loadData();
   }
 
   Future addMemo(String content) async {
-    var selectedCategoryID = _selectedCategory!.id;
+    var selectedCategoryID = _selectedCategory.id;
     var res = await _memoService
         .addMemo(Memo(content: content, categoryID: selectedCategoryID));
-    _selectedCategory!.memos.add(res);
+    _selectedCategory.memos.add(res);
     notifyListeners();
   }
 
   Future updateSelectedMemo(String content) async {
-    var categoryID = _selectedCategory!.id;
-    var indexOfMemo = _selectedCategory!.memos.indexOf(_selectedMemo!);
+    var categoryID = _selectedCategory.id;
+    var indexOfMemo = _selectedCategory.memos.indexOf(_selectedMemo);
     LOG.info('indexOfMemo $indexOfMemo');
 
-    var memoMap = _selectedMemo!.toMap();
+    var memoMap = _selectedMemo.toMap();
     memoMap["content"] = content;
     memoMap["category_id"] = categoryID;
 
@@ -159,7 +160,7 @@ class MemoScreenViewModel extends ChangeNotifier {
   }
 
   Memo get selectedMemo {
-    return _selectedMemo ?? Memo.empty();
+    return _selectedMemo;
   }
 
   void selectMemo(Memo memo) {
@@ -168,7 +169,7 @@ class MemoScreenViewModel extends ChangeNotifier {
   }
 
   void deselectMemo() {
-    _selectedMemo = null;
+    _selectedMemo = Memo.nullMemo;
     notifyListeners();
   }
 }

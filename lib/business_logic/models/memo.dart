@@ -1,4 +1,6 @@
 class Memo {
+  static final Memo nullMemo = Memo._empty();
+
   int? id;
   int categoryID;
   String content;
@@ -9,7 +11,7 @@ class Memo {
         content: el["content"] == null ? '' : el['content'],
       );
 
-  Memo.empty()
+  Memo._empty()
       : id = 0,
         categoryID = 0,
         content = '';
