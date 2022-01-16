@@ -31,7 +31,7 @@ class MemoScreenViewModel extends ChangeNotifier {
   }
 
   bool _isCategorySelected() {
-    return _selectedCategory == MemoCategory.nullCategory;
+    return !identical(_selectedCategory, MemoCategory.nullCategory);
   }
 
   int get categoryCount {
@@ -48,7 +48,7 @@ class MemoScreenViewModel extends ChangeNotifier {
         return category;
       }
     }
-    return MemoCategory.nullCategory;
+    throw AssertionError();
   }
 
   Future deleteCategory(MemoCategory category) async {
