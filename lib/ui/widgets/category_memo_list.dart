@@ -87,19 +87,14 @@ class CategoryMemoList extends StatelessWidget {
             actions: <Widget>[
               TextButton(
                   onPressed: () {
-                    var sb = SnackBar(
-                        content: Text("Unexpected Error.".i18n),
-                        backgroundColor: Colors.redAccent);
-                    _model
-                        .deleteMemo(memo)
-                        .then((value) {
-                          sb = SnackBar(content: Text("Deleted".i18n));
-                        })
-                        .catchError((e) {})
-                        .whenComplete(() {
-                          ScaffoldMessenger.of(context).showSnackBar(sb);
-                          Navigator.of(context).pop(true);
-                        });
+                    var isError = false;
+                    _model.deleteMemo(memo).catchError((e) {
+                      isError = true;
+                    }).whenComplete(() {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(snackBarWhenComplete(isError));
+                      Navigator.of(context).pop(true);
+                    });
                   },
                   child: Text("DELETE".i18n)),
               TextButton(
@@ -109,5 +104,13 @@ class CategoryMemoList extends StatelessWidget {
             ],
           );
         });
+  }
+
+  SnackBar snackBarWhenComplete(bool isError) {
+    return isError
+        ? SnackBar(
+            content: Text("Unexpected Error.".i18n),
+            backgroundColor: Colors.redAccent)
+        : SnackBar(content: Text("Deleted".i18n));
   }
 }

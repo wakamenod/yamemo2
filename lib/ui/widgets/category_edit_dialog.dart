@@ -147,19 +147,14 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
             actions: <Widget>[
               TextButton(
                   onPressed: () {
-                    SnackBar sb = SnackBar(
-                        content: Text("Unexpected Error.".i18n),
-                        backgroundColor: Colors.redAccent);
-                    widget.model
-                        .deleteCategory(category)
-                        .then((value) {
-                          sb = SnackBar(content: Text("Deleted".i18n));
-                        })
-                        .catchError((e) {})
-                        .whenComplete(() {
-                          Navigator.of(dialogContext).pop(true);
-                          ScaffoldMessenger.of(dialogContext).showSnackBar(sb);
-                        });
+                    var isError = false;
+                    widget.model.deleteCategory(category).catchError((e) {
+                      isError = true;
+                    }).whenComplete(() {
+                      Navigator.of(dialogContext).pop(true);
+                      ScaffoldMessenger.of(dialogContext)
+                          .showSnackBar(snackBarWhenComplete(isError));
+                    });
                   },
                   child: Text("DELETE".i18n)),
               TextButton(
@@ -169,5 +164,13 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
             ],
           );
         });
+  }
+
+  SnackBar snackBarWhenComplete(bool isError) {
+    return isError
+        ? SnackBar(
+            content: Text("Unexpected Error.".i18n),
+            backgroundColor: Colors.redAccent)
+        : SnackBar(content: Text("Deleted".i18n));
   }
 }

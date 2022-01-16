@@ -66,7 +66,8 @@ class MemoServiceSQLite extends MemoService {
       LOG.info('old: $oldVersion new:$newVersion');
       for (var i = oldVersion + 1; i <= newVersion; i++) {
         var queries = migrationScripts[i.toString()];
-        for (String query in queries!) {
+        if (queries == null) break;
+        for (String query in queries) {
           await db.execute(query);
         }
       }
@@ -87,7 +88,8 @@ class MemoServiceSQLite extends MemoService {
     await db.execute("INSERT INTO Category (title) VALUES('category2')");
     for (var i = 1; i <= migrationScripts.length; i++) {
       var queries = migrationScripts[(i + 1).toString()];
-      for (String query in queries!) {
+      if (queries == null) break;
+      for (String query in queries) {
         await db.execute(query);
       }
     }

@@ -145,9 +145,7 @@ class MemoScreenViewModel extends ChangeNotifier {
     memoMap["content"] = content;
     memoMap["category_id"] = categoryID;
 
-    await _memoService.updateMemo(memoMap).then((val) {
-      // none
-    }).catchError((e) {
+    await _memoService.updateMemo(memoMap).catchError((e) {
       LOG.warn(e);
       throw e;
     }).whenComplete(() {
