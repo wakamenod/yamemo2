@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'ui/views/memo_list_screen.dart';
 import 'package:yamemo2/services/service_locator.dart';
-// todo
-// import 'package:admob_flutter/admob_flutter.dart';
 import 'package:i18n_extension/i18n_widget.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // todo
-  // Admob.initialize();
-  // await Admob.requestTrackingAuthorization();
-
-  setupServiceLocator();
+  final initFuture = MobileAds.instance.initialize();
+  setupServiceLocator(initFuture);
   runApp(const MyApp());
 }
 

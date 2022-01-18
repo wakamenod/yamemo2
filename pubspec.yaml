@@ -43,6 +43,7 @@ dependencies:
   sqflite: ^2.0.1
   flutter_spinbox: ^0.8.0
   simple_logger: ^1.9.0
+  google_mobile_ads: ^1.0.1
 
 dev_dependencies:
   flutter_test:

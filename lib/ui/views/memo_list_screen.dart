@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:yamemo2/constants.dart';
-// todo
-// import 'package:yamemo2/services/admob/admob_service.dart';
+
+import 'package:yamemo2/services/ads/google_mobile_ads_service.dart';
 import 'package:yamemo2/services/service_locator.dart';
 import 'package:yamemo2/business_logic/view_models/memo_screen_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:yamemo2/ui/views/memo_detail/memo_detail_screen.dart';
 import 'package:yamemo2/ui/widgets/category_tab_bar.dart';
 import 'package:yamemo2/ui/widgets/category_memo_list.dart';
-// todo
-// import 'package:admob_flutter/admob_flutter.dart';
-import 'package:yamemo2/utils/log.dart'; // import the extension
+
+import 'package:yamemo2/utils/log.dart';
 
 class MemoListScreen extends StatefulWidget {
   static const id = 'list';
@@ -24,8 +24,8 @@ class MemoListScreen extends StatefulWidget {
 class _MemoListScreenState extends State<MemoListScreen>
     with TickerProviderStateMixin {
   final _model = serviceLocator<MemoScreenViewModel>();
-  // todo
-  // final _ams = serviceLocator<AdMobService>();
+  BannerAd? _bannerAd;
+  bool _bannerAdIsLoaded = false;
 
   @override
   void initState() {
@@ -36,6 +36,36 @@ class _MemoListScreenState extends State<MemoListScreen>
   @override
   void dispose() {
     super.dispose();
+    _bannerAd?.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final ads = serviceLocator<GoogleMobileAdsService>();
+    ads.initialization.then((status) {
+      setState(() {
+        _bannerAd = BannerAd(
+          adUnitId: ads.bannerAdUnitId,
+          size: AdSize.banner,
+          request: const AdRequest(),
+          listener: BannerAdListener(
+            onAdLoaded: (Ad ad) {
+              LOG.info('$BannerAd loaded.');
+              setState(() {
+                _bannerAdIsLoaded = true;
+              });
+            },
+            onAdFailedToLoad: (Ad ad, LoadAdError error) {
+              LOG.info('$BannerAd failedToLoad: $error');
+              ad.dispose();
+            },
+            onAdOpened: (Ad ad) => LOG.info('$BannerAd onAdOpened.'),
+            onAdClosed: (Ad ad) => LOG.info('$BannerAd onAdClosed.'),
+          ),
+        )..load();
+      });
+    });
   }
 
   @override
@@ -76,15 +106,21 @@ class _MemoListScreenState extends State<MemoListScreen>
           body: Column(
             children: [
               Expanded(child: CategoryMemoList(UniqueKey(), value)),
-              // todo
-              // AdmobBanner(
-              //   adSize: AdmobBannerSize.BANNER,
-              //   adUnitId: _ams.getBannerAdID(),
-              // )
+              createAd(),
             ],
           ),
         );
       }),
     );
+  }
+
+  Widget createAd() {
+    final bannerAd = _bannerAd;
+    return bannerAd == null || !_bannerAdIsLoaded
+        ? const SizedBox(height: 50)
+        : SizedBox(
+            width: bannerAd.size.width.toDouble(),
+            height: bannerAd.size.height.toDouble(),
+            child: AdWidget(ad: bannerAd));
   }
 }
