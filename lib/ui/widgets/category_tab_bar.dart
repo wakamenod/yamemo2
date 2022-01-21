@@ -8,24 +8,24 @@ import 'package:yamemo2/yamemo.i18n.dart';
 import 'category_edit_dialog.dart';
 
 class CategoryTabBar extends StatelessWidget implements PreferredSizeWidget {
-  const CategoryTabBar(Key? key, this._model) : super(key: key);
+  final MemoScreenViewModel model;
 
-  final MemoScreenViewModel _model;
+  const CategoryTabBar({Key? key, required this.model}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
-        children: List<Widget>.generate(_model.categoryCount, (int index) {
-          var category = _model.getCategoryAt(index);
+        children: List<Widget>.generate(model.categoryCount, (int index) {
+          var category = model.getCategoryAt(index);
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: GestureDetector(
               onLongPress: () => showCategoryEditDialog(context, index),
-              onTap: () => _model.selectCategoryAt(index),
+              onTap: () => model.selectCategoryAt(index),
               child: Container(
-                decoration: _model.isSelectedCategory(category)
+                decoration: model.isSelectedCategory(category)
                     ? selectedDeco
                     : unselectedDeco,
                 child: Center(
@@ -33,7 +33,7 @@ class CategoryTabBar extends StatelessWidget implements PreferredSizeWidget {
                     category.title,
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
-                      color: _model.isSelectedCategory(category)
+                      color: model.isSelectedCategory(category)
                           ? kBaseColor
                           : Colors.white,
                     ),
@@ -69,15 +69,15 @@ class CategoryTabBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   Future showCategoryEditDialog(BuildContext ctx, int idx) async {
-    _model.selectCategoryAt(idx);
-    MemoCategory category = _model.getCategoryAt(idx);
+    model.selectCategoryAt(idx);
+    MemoCategory category = model.getCategoryAt(idx);
 
     return await showDialog(
         context: ctx,
         builder: (BuildContext context) {
           return CategoryEditDialog(
             baseContext: ctx,
-            model: _model,
+            model: model,
             category: category,
           );
         });

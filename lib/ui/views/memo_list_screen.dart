@@ -83,8 +83,7 @@ class _MemoListScreenState extends State<MemoListScreen>
           appBar: AppBar(
               elevation: 0.0,
               backgroundColor: kBaseColor,
-              // todo key
-              bottom: CategoryTabBar(UniqueKey(), value)),
+              bottom: CategoryTabBar(model: value)),
           floatingActionButton: Container(
             margin: const EdgeInsets.only(bottom: 50.0),
             child: FloatingActionButton(

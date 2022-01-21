@@ -59,8 +59,7 @@ class MemoDetailScreenState extends State<MemoDetailScreen> {
             elevation: 0.0,
             backgroundColor: kBaseColor,
             actions: <Widget>[
-              // todo key
-              DoneEditButton(UniqueKey(), () => onTapDone()),
+              DoneEditButton(onTapDone: () => onTapDone()),
             ],
           ),
           body: Container(
@@ -183,9 +182,9 @@ class MemoDetailScreenState extends State<MemoDetailScreen> {
 }
 
 class DoneEditButton extends StatelessWidget {
-  final Function _onTapDone;
+  final Function onTapDone;
 
-  const DoneEditButton(Key? key, this._onTapDone) : super(key: key);
+  const DoneEditButton({Key? key, required this.onTapDone}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -194,7 +193,7 @@ class DoneEditButton extends StatelessWidget {
       child: GestureDetector(
         child: const Icon(Icons.check),
         onTap: () {
-          _onTapDone();
+          onTapDone();
           Navigator.pop(context);
         },
       ),
