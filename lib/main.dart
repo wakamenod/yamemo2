@@ -37,7 +37,6 @@ class MyApp extends StatelessWidget {
           Locale('en', "US"),
           Locale('ja', "JP"),
         ],
-        // todo 公式のものに変更してこのパッケージは削除する
         home: I18n(child: const MemoListScreen()));
   }
 }
