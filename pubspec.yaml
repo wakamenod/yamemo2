@@ -44,6 +44,7 @@ dependencies:
   flutter_spinbox: ^0.8.0
   simple_logger: ^1.9.0
   google_mobile_ads: ^1.0.1
+  flutter_flavorizr: ^2.1.2
 
 dev_dependencies:
   flutter_test:
@@ -98,3 +99,28 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flavorizr:
+  app:
+    android:
+      flavorDimensions: "flavor-type"
+    ios:
+
+  flavors:
+    dev:
+      app:
+        name: "Yamemo2(Dev)"
+
+      android:
+        applicationId: "com.example.testapp.dev"
+      ios:
+        bundleId: "com.example.testapp.dev"
+
+    prod:
+      app:
+        name: "Yamemo2"
+
+      android:
+        applicationId: "com.example.testapp"
+      ios:
+        bundleId: "com.example.testapp"
