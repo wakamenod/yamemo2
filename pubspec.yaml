@@ -112,15 +112,15 @@ flavorizr:
         name: "Yamemo2(Dev)"
 
       android:
-        applicationId: "com.example.testapp.dev"
+        applicationId: "net.wakamenod.yamemo2.dev"
       ios:
-        bundleId: "com.example.testapp.dev"
+        bundleId: "net.wakamenod.yamemo2.dev"
 
     prod:
       app:
         name: "Yamemo2"
 
       android:
-        applicationId: "com.example.testapp"
+        applicationId: "net.wakamenod.yamemo2"
       ios:
-        bundleId: "com.example.testapp"
+        bundleId: "net.wakamenod.yamemo2"
