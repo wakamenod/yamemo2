@@ -11,28 +11,30 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _flavorBanner(
-      child: MaterialApp(
-          title: 'YAMemo',
-          theme: ThemeData(
-            primarySwatch: Colors.orange,
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-            fontFamily: "MPLUSRounded1c",
-          ),
-          routes: {
-            MemoListScreen.id: (context) => const MemoListScreen(),
-          },
-          localizationsDelegates: const [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [
-            Locale('en', "US"),
-            Locale('ja', "JP"),
-          ],
-          home: I18n(child: const MemoListScreen())),
-        show: kDebugMode
+    return MaterialApp(
+      title: 'YAMemo',
+      theme: ThemeData(
+        primarySwatch: Colors.orange,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        fontFamily: "MPLUSRounded1c",
+      ),
+      routes: {
+        MemoListScreen.id: (context) => const MemoListScreen(),
+      },
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', "US"),
+        Locale('ja', "JP"),
+      ],
+      home: I18n(
+          child: _flavorBanner(
+        child: const MemoListScreen(),
+        show: kDebugMode,
+      )),
     );
   }
 
@@ -42,17 +44,17 @@ class App extends StatelessWidget {
   }) =>
       show
           ? Banner(
-        child: child,
-        location: BannerLocation.topStart,
-        message: F.name,
-        color: Colors.green.withOpacity(0.6),
-        textStyle: const TextStyle(
-            fontWeight: FontWeight.w700,
-            fontSize: 12.0,
-            letterSpacing: 1.0),
-        textDirection: TextDirection.ltr,
-      )
+              child: child,
+              location: BannerLocation.topStart,
+              message: F.name,
+              color: Colors.green.withOpacity(0.6),
+              textStyle: const TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 12.0,
+                  letterSpacing: 1.0),
+              textDirection: TextDirection.ltr,
+            )
           : Container(
-        child: child,
-      );
+              child: child,
+            );
 }

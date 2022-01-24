@@ -1,4 +1,4 @@
-package com.example.yamemo2
+package net.wakamenod.yamemo2
 
 import io.flutter.embedding.android.FlutterActivity
 
