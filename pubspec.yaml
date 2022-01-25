@@ -124,3 +124,8 @@ flavorizr:
         applicationId: "net.wakamenod.yamemo2"
       ios:
         bundleId: "net.wakamenod.yamemo2"
+
+fonts:
+  - family: MPLUSRounded1c
+    fonts:
+      - asset: assets/fonts/MPLUSRounded1c-Regular.ttf
