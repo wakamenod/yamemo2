@@ -68,6 +68,15 @@ class _MemoListScreenState extends State<MemoListScreen>
     });
   }
 
+  static Route<Object?> _memoDetailNavigation(
+          BuildContext context, Object? argument) =>
+      PageRouteBuilder(
+        pageBuilder: (context, anim1, anim2) => const MemoDetailScreen(
+          screenType: ScreenType.add,
+        ),
+        transitionDuration: const Duration(seconds: 0),
+      );
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<MemoScreenViewModel>(
@@ -90,15 +99,9 @@ class _MemoListScreenState extends State<MemoListScreen>
                 backgroundColor: kBaseColor,
                 child: const Icon(Icons.add),
                 onPressed: () async {
-                  Navigator.push(
+                  Navigator.restorablePush(
                     context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, anim1, anim2) => MemoDetailScreen(
-                        model: _model,
-                        screenType: ScreenType.add,
-                      ),
-                      transitionDuration: const Duration(seconds: 0),
-                    ),
+                    _memoDetailNavigation,
                   );
                 }),
           ),

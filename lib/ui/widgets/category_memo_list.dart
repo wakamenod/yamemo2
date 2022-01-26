@@ -11,6 +11,15 @@ class CategoryMemoList extends StatelessWidget {
 
   final MemoScreenViewModel _model;
 
+  static Route<Object?> _memoDetailNavigation(
+          BuildContext context, Object? argument) =>
+      PageRouteBuilder(
+        pageBuilder: (context, anim1, anim2) => const MemoDetailScreen(
+          screenType: ScreenType.add,
+        ),
+        transitionDuration: const Duration(seconds: 0),
+      );
+
   @override
   Widget build(BuildContext context) {
     LOG.info('build isloading = ${_model.isLoading}');
@@ -44,16 +53,10 @@ class CategoryMemoList extends StatelessWidget {
                   child: GestureDetector(
                       onTap: () async {
                         _model.selectMemo(memo);
-                        await Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                              pageBuilder: (context, anim1, anim2) =>
-                                  MemoDetailScreen(
-                                model: _model,
-                                screenType: ScreenType.update,
-                              ),
-                              transitionDuration: const Duration(seconds: 0),
-                            ));
+                        Navigator.restorablePush(
+                          context,
+                          _memoDetailNavigation,
+                        );
                         _model.deselectMemo();
                       },
                       child: Container(

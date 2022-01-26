@@ -3,13 +3,17 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:yamemo2/business_logic/view_models/memo_screen_viewmodel.dart';
 import 'package:yamemo2/constants.dart';
+import 'package:yamemo2/services/service_locator.dart';
 import 'package:yamemo2/ui/views/add_category_screen.dart';
 import 'package:yamemo2/ui/views/memo_detail/memo_detail_screen.dart';
 import 'package:yamemo2/yamemo.i18n.dart';
 
-class MemoDetailScreenState extends State<MemoDetailScreen> {
-  final TextEditingController controller = TextEditingController();
+class MemoDetailScreenState extends State<MemoDetailScreen>
+    with RestorationMixin {
+  final RestorableTextEditingController controller =
+      RestorableTextEditingController();
   late void Function() onTapDone;
+  final _model = serviceLocator<MemoScreenViewModel>();
 
   MemoDetailScreenState();
 
@@ -23,7 +27,7 @@ class MemoDetailScreenState extends State<MemoDetailScreen> {
     switch (widget.screenType) {
       case ScreenType.add:
         return () {
-          widget.model.addMemo(controller.text).catchError((e) {
+          _model.addMemo(controller.value.text).catchError((e) {
             Fluttertoast.showToast(
                 msg: "Unexpected Error.".i18n,
                 backgroundColor: Colors.redAccent);
@@ -31,7 +35,7 @@ class MemoDetailScreenState extends State<MemoDetailScreen> {
         };
       case ScreenType.update:
         return () {
-          widget.model.updateSelectedMemo(controller.text).catchError((e) {
+          _model.updateSelectedMemo(controller.value.text).catchError((e) {
             Fluttertoast.showToast(
                 msg: "Unexpected Error.".i18n,
                 backgroundColor: Colors.redAccent);
@@ -49,10 +53,10 @@ class MemoDetailScreenState extends State<MemoDetailScreen> {
   @override
   Widget build(BuildContext context) {
     if (widget.screenType == ScreenType.update) {
-      controller.text = widget.model.selectedMemo.content;
+      controller.value.text = _model.selectedMemo.content;
     }
     return ChangeNotifierProvider.value(
-      value: widget.model,
+      value: _model,
       child: Consumer<MemoScreenViewModel>(builder: (context, value, child) {
         return Scaffold(
           appBar: AppBar(
@@ -104,7 +108,7 @@ class MemoDetailScreenState extends State<MemoDetailScreen> {
           padding: const EdgeInsets.all(8.0),
           child: TextFormField(
             textAlignVertical: TextAlignVertical.top,
-            controller: controller,
+            controller: controller.value,
             keyboardType: TextInputType.multiline,
             textInputAction: TextInputAction.newline,
             maxLines: null,
@@ -178,6 +182,14 @@ class MemoDetailScreenState extends State<MemoDetailScreen> {
         }));
 
     return res;
+  }
+
+  @override
+  String? get restorationId => 'memo_detail';
+
+  @override
+  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
+    registerForRestoration(controller, 'memo_detail_text');
   }
 }
 

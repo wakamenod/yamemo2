@@ -15,5 +15,5 @@ void setupServiceLocator(Future<InitializationStatus> adsInitFuture) {
       () => GoogleMobileAdsService(adsInitFuture));
 
   serviceLocator
-      .registerFactory<MemoScreenViewModel>(() => MemoScreenViewModel());
+      .registerLazySingleton<MemoScreenViewModel>(() => MemoScreenViewModel());
 }
