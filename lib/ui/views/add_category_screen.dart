@@ -43,15 +43,15 @@ class AddCategoryScreen extends StatelessWidget {
                   ),
                 )),
             TextButton(
-              child: Text(
-                'Add'.i18n,
-                style: const TextStyle(color: Colors.white),
-              ),
               style: TextButton.styleFrom(backgroundColor: kBaseColor),
               onPressed: () {
                 onAddCateogry(_controller.text);
                 Navigator.pop(context, _controller.text);
               },
+              child: Text(
+                'Add'.i18n,
+                style: const TextStyle(color: Colors.white),
+              ),
             ),
           ],
         ),

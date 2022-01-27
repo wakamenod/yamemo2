@@ -6,8 +6,10 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class MemoServiceSQLite extends MemoService {
+  static const _currentVersion = 3;
   static const _tblMemo = "Memo";
   static const _tblCategory = "Category";
+  static const _tblWritingMemoRecord = "WritingMemoRecord";
 
   late Future<List<Memo>> _memos = initMemos();
   late Future<List<MemoCategory>> _categories = initCategories();
@@ -18,7 +20,11 @@ class MemoServiceSQLite extends MemoService {
       'ALTER TABLE $_tblCategory ADD COLUMN sort_no INTEGER NOT NULL DEFAULT 0;',
       'UPDATE $_tblCategory SET sort_no = id;'
     ],
-    // '3' : ['ALTER TABLE memo ADD COLUMN update_at TIMESTAMP;'],
+    '3': [
+      // 編集中メモIDの記録
+      'CREATE TABLE $_tblWritingMemoRecord(memo_id INTEGER PRIMARY KEY);',
+      'INSERT INTO $_tblWritingMemoRecord(memo_id) VALUES(0)',
+    ],
   };
 
   // Database _getDatabase() {
@@ -61,7 +67,8 @@ class MemoServiceSQLite extends MemoService {
   Future<Database> initDB() async {
     String path = join(await getDatabasesPath(), "yamemoapp_database.db");
 
-    return await openDatabase(path, version: 2, onCreate: _createTable,
+    return await openDatabase(path,
+        version: _currentVersion, onCreate: _createTable,
         onUpgrade: (Database db, int oldVersion, int newVersion) async {
       LOG.info('old: $oldVersion new:$newVersion');
       for (var i = oldVersion + 1; i <= newVersion; i++) {
@@ -149,6 +156,23 @@ class MemoServiceSQLite extends MemoService {
     var res = db
         .update(_tblMemo, memoMap, where: "id = ?", whereArgs: [memoMap["id"]]);
     return res;
+  }
+
+  @override
+  Future updateWritingMemoRecord(int memoID) async {
+    final db = await database;
+
+    return await db
+        .rawQuery('UPDATE $_tblWritingMemoRecord SET memo_id = ?', [memoID]);
+  }
+
+  @override
+  Future<int> getWritingMemoID() async {
+    final db = await database;
+
+    var res = await db.query(_tblWritingMemoRecord);
+
+    return res[0]['memo_id'] as int;
   }
 
   @override

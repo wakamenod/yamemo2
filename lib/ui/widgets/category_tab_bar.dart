@@ -3,29 +3,30 @@ import 'package:flutter_spinbox/flutter_spinbox.dart';
 import 'package:yamemo2/business_logic/models/memo_category.dart';
 import 'package:yamemo2/business_logic/view_models/memo_screen_viewmodel.dart';
 import 'package:yamemo2/constants.dart';
+import 'package:yamemo2/services/service_locator.dart';
 import 'package:yamemo2/yamemo.i18n.dart';
 
 import 'category_edit_dialog.dart';
 
 class CategoryTabBar extends StatelessWidget implements PreferredSizeWidget {
-  final MemoScreenViewModel model;
+  final _model = serviceLocator<MemoScreenViewModel>();
 
-  const CategoryTabBar({Key? key, required this.model}) : super(key: key);
+  CategoryTabBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
-        children: List<Widget>.generate(model.categoryCount, (int index) {
-          var category = model.getCategoryAt(index);
+        children: List<Widget>.generate(_model.categoryCount, (int index) {
+          var category = _model.getCategoryAt(index);
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: GestureDetector(
               onLongPress: () => showCategoryEditDialog(context, index),
-              onTap: () => model.selectCategoryAt(index),
+              onTap: () => _model.selectCategoryAt(index),
               child: Container(
-                decoration: model.isSelectedCategory(category)
+                decoration: _model.isSelectedCategory(category)
                     ? selectedDeco
                     : unselectedDeco,
                 child: Center(
@@ -33,7 +34,7 @@ class CategoryTabBar extends StatelessWidget implements PreferredSizeWidget {
                     category.title,
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
-                      color: model.isSelectedCategory(category)
+                      color: _model.isSelectedCategory(category)
                           ? kBaseColor
                           : Colors.white,
                     ),
@@ -69,15 +70,14 @@ class CategoryTabBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   Future showCategoryEditDialog(BuildContext ctx, int idx) async {
-    model.selectCategoryAt(idx);
-    MemoCategory category = model.getCategoryAt(idx);
+    _model.selectCategoryAt(idx);
+    MemoCategory category = _model.getCategoryAt(idx);
 
     return await showDialog(
         context: ctx,
         builder: (BuildContext context) {
           return CategoryEditDialog(
             baseContext: ctx,
-            model: model,
             category: category,
           );
         });

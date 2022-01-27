@@ -71,9 +71,7 @@ class _MemoListScreenState extends State<MemoListScreen>
   static Route<Object?> _memoDetailNavigation(
           BuildContext context, Object? argument) =>
       PageRouteBuilder(
-        pageBuilder: (context, anim1, anim2) => const MemoDetailScreen(
-          screenType: ScreenType.add,
-        ),
+        pageBuilder: (context, anim1, anim2) => const MemoDetailScreen(),
         transitionDuration: const Duration(seconds: 0),
       );
 
@@ -92,7 +90,7 @@ class _MemoListScreenState extends State<MemoListScreen>
           appBar: AppBar(
               elevation: 0.0,
               backgroundColor: kBaseColor,
-              bottom: CategoryTabBar(model: value)),
+              bottom: CategoryTabBar()),
           floatingActionButton: Container(
             margin: const EdgeInsets.only(bottom: 50.0),
             child: FloatingActionButton(
@@ -107,7 +105,7 @@ class _MemoListScreenState extends State<MemoListScreen>
           ),
           body: Column(
             children: [
-              Expanded(child: CategoryMemoList(UniqueKey(), value)),
+              Expanded(child: CategoryMemoList()),
               createAd(),
             ],
           ),

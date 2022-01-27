@@ -3,17 +3,14 @@ import 'package:flutter_spinbox/flutter_spinbox.dart';
 import 'package:yamemo2/business_logic/models/memo_category.dart';
 import 'package:yamemo2/business_logic/view_models/memo_screen_viewmodel.dart';
 import 'package:yamemo2/constants.dart';
+import 'package:yamemo2/services/service_locator.dart';
 import 'package:yamemo2/yamemo.i18n.dart';
 
 class CategoryEditDialog extends StatefulWidget {
   const CategoryEditDialog(
-      {Key? key,
-      required this.model,
-      required this.baseContext,
-      required this.category})
+      {Key? key, required this.baseContext, required this.category})
       : super(key: key);
 
-  final MemoScreenViewModel model;
   final BuildContext baseContext;
   final MemoCategory category;
 
@@ -24,6 +21,7 @@ class CategoryEditDialog extends StatefulWidget {
 class _CategoryEditDialogState extends State<CategoryEditDialog> {
   late int selectedPosition;
   TextEditingController controller = TextEditingController();
+  final _model = serviceLocator<MemoScreenViewModel>();
 
   @override
   void initState() {
@@ -40,7 +38,7 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
         buildCategoryNameEdit(controller: controller),
         buildCategoryIndexEdit(
           position: selectedPosition,
-          max: widget.model.categoryCount,
+          max: _model.categoryCount,
         ),
         Padding(
           padding: const EdgeInsets.only(top: 8.0),
@@ -48,7 +46,7 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextButton(
-                  onPressed: widget.model.categoryCount <= 1
+                  onPressed: _model.categoryCount <= 1
                       ? null
                       : () {
                           Navigator.of(context).pop(true);
@@ -58,13 +56,13 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
                   child: Text(
                     "DELETE".i18n,
                     style: TextStyle(
-                        color: widget.model.categoryCount <= 1
+                        color: _model.categoryCount <= 1
                             ? Colors.grey
                             : Colors.red),
                   )),
               TextButton(
                   onPressed: () {
-                    widget.model
+                    _model
                         .updateCategory(controller.text, selectedPosition)
                         .catchError((e) {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -148,7 +146,7 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
               TextButton(
                   onPressed: () {
                     var isError = false;
-                    widget.model.deleteCategory(category).catchError((e) {
+                    _model.deleteCategory(category).catchError((e) {
                       isError = true;
                     }).whenComplete(() {
                       Navigator.of(dialogContext).pop(true);

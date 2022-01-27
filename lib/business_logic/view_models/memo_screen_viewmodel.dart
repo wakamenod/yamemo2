@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/foundation.dart';
 import 'package:yamemo2/business_logic/models/memo.dart';
 import 'package:yamemo2/business_logic/models/memo_category.dart';
@@ -8,6 +10,7 @@ import 'package:yamemo2/utils/log.dart';
 class MemoScreenViewModel extends ChangeNotifier {
   final MemoService _memoService = serviceLocator<MemoService>();
   List<MemoCategory> _categories = [];
+  List<Memo> _memos = [];
   bool isLoading = true;
   Future<List<MemoCategory>>? futureCategories;
   MemoCategory _selectedCategory = MemoCategory.nullCategory;
@@ -49,6 +52,11 @@ class MemoScreenViewModel extends ChangeNotifier {
       }
     }
     throw AssertionError();
+  }
+
+  Memo getMemoByID(int memoID) {
+    return _memos.firstWhere((element) => element.id == memoID,
+        orElse: () => Memo.nullMemo);
   }
 
   Future deleteCategory(MemoCategory category) async {
@@ -128,18 +136,17 @@ class MemoScreenViewModel extends ChangeNotifier {
     loadData();
   }
 
-  Future addMemo(String content) async {
+  Future<Memo> addMemo(String content) async {
     var selectedCategoryID = _selectedCategory.id;
     var res = await _memoService
         .addMemo(Memo(content: content, categoryID: selectedCategoryID));
     _selectedCategory.memos.add(res);
     notifyListeners();
+    return res;
   }
 
   Future updateSelectedMemo(String content) async {
     var categoryID = _selectedCategory.id;
-    var indexOfMemo = _selectedCategory.memos.indexOf(_selectedMemo);
-    LOG.info('indexOfMemo $indexOfMemo');
 
     var memoMap = _selectedMemo.toMap();
     memoMap["content"] = content;
@@ -157,6 +164,10 @@ class MemoScreenViewModel extends ChangeNotifier {
     return _selectedMemo;
   }
 
+  bool isMemoSelected() {
+    return _selectedMemo != Memo.nullMemo;
+  }
+
   void selectMemo(Memo memo) {
     _selectedMemo = memo;
     notifyListeners();
@@ -165,5 +176,15 @@ class MemoScreenViewModel extends ChangeNotifier {
   void deselectMemo() {
     _selectedMemo = Memo.nullMemo;
     notifyListeners();
+  }
+
+  @override
+  Future updateWritingMemoRecord(int memoID) async {
+    return _memoService.updateWritingMemoRecord(memoID);
+  }
+
+  @override
+  Future<int> getWritingMemoID() async {
+    return _memoService.getWritingMemoID();
   }
 }

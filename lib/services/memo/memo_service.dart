@@ -12,4 +12,6 @@ abstract class MemoService {
   Future deleteMemoByCategoryID(int categoryID);
   Future deleteCategory(MemoCategory category);
   Future updateCategorySortNos(int from, int to);
+  Future<int> getWritingMemoID();
+  Future updateWritingMemoRecord(int memoID);
 }

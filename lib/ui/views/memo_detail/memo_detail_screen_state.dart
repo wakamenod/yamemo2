@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -8,40 +10,47 @@ import 'package:yamemo2/ui/views/add_category_screen.dart';
 import 'package:yamemo2/ui/views/memo_detail/memo_detail_screen.dart';
 import 'package:yamemo2/yamemo.i18n.dart';
 
+import '../../../business_logic/models/memo.dart';
+
 class MemoDetailScreenState extends State<MemoDetailScreen>
     with RestorationMixin {
   final RestorableTextEditingController controller =
       RestorableTextEditingController();
-  late void Function() onTapDone;
   final _model = serviceLocator<MemoScreenViewModel>();
+  Timer? _debounce;
 
   MemoDetailScreenState();
 
   @override
   void initState() {
     super.initState();
-    onTapDone = getOnTapDone();
   }
 
-  void Function() getOnTapDone() {
-    switch (widget.screenType) {
-      case ScreenType.add:
-        return () {
-          _model.addMemo(controller.value.text).catchError((e) {
-            Fluttertoast.showToast(
-                msg: "Unexpected Error.".i18n,
-                backgroundColor: Colors.redAccent);
-          });
-        };
-      case ScreenType.update:
-        return () {
-          _model.updateSelectedMemo(controller.value.text).catchError((e) {
-            Fluttertoast.showToast(
-                msg: "Unexpected Error.".i18n,
-                backgroundColor: Colors.redAccent);
-          });
-        };
+  void Function() getSaveFn() {
+    if (!_model.isMemoSelected()) {
+      return () async {
+        final newMemo =
+            await _model.addMemo(controller.value.text).catchError((e) {
+          Fluttertoast.showToast(
+              msg: "Unexpected Error.".i18n, backgroundColor: Colors.redAccent);
+        });
+        _model.updateWritingMemoRecord(newMemo.id!);
+        _model.selectMemo(newMemo);
+      };
     }
+
+    return () async {
+      _model.updateWritingMemoRecord(_model.selectedMemo.id!);
+      _model.updateSelectedMemo(controller.value.text).catchError((e) {
+        Fluttertoast.showToast(
+            msg: "Unexpected Error.".i18n, backgroundColor: Colors.redAccent);
+      });
+    };
+  }
+
+  static void popDetailPage(BuildContext context, MemoScreenViewModel model) {
+    model.deselectMemo();
+    Navigator.pop(context);
   }
 
   @override
@@ -52,7 +61,7 @@ class MemoDetailScreenState extends State<MemoDetailScreen>
 
   @override
   Widget build(BuildContext context) {
-    if (widget.screenType == ScreenType.update) {
+    if (_model.isMemoSelected()) {
       controller.value.text = _model.selectedMemo.content;
     }
     return ChangeNotifierProvider.value(
@@ -62,8 +71,13 @@ class MemoDetailScreenState extends State<MemoDetailScreen>
           appBar: AppBar(
             elevation: 0.0,
             backgroundColor: kBaseColor,
+            leading: BackButton(
+              onPressed: () {
+                popDetailPage(context, _model);
+              },
+            ),
             actions: <Widget>[
-              DoneEditButton(onTapDone: () => onTapDone()),
+              DoneEditButton(model: _model, onTapDone: () => getSaveFn()),
             ],
           ),
           body: Container(
@@ -96,6 +110,13 @@ class MemoDetailScreenState extends State<MemoDetailScreen>
     );
   }
 
+  _onTextChanged(String text) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      getSaveFn().call();
+    });
+  }
+
   Widget buildContentForm() {
     return Expanded(
       child: Padding(
@@ -112,6 +133,7 @@ class MemoDetailScreenState extends State<MemoDetailScreen>
             keyboardType: TextInputType.multiline,
             textInputAction: TextInputAction.newline,
             maxLines: null,
+            onChanged: _onTextChanged,
             // maxLength: 512,
             // maxLengthEnforced: true,
             //initialValue: _content,
@@ -159,7 +181,7 @@ class MemoDetailScreenState extends State<MemoDetailScreen>
         (index) => SimpleDialogOption(
               onPressed: () async {
                 model.selectCategoryAt(index);
-                Navigator.pop(context);
+                popDetailPage(context, model);
               },
               child: Text(model.getCategoryAt(index).title),
             ));
@@ -188,15 +210,25 @@ class MemoDetailScreenState extends State<MemoDetailScreen>
   String? get restorationId => 'memo_detail';
 
   @override
-  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
+  Future<void> restoreState(
+      RestorationBucket? oldBucket, bool initialRestore) async {
     registerForRestoration(controller, 'memo_detail_text');
+    if (!initialRestore) {
+      final writingMemo = _model.getMemoByID(await _model.getWritingMemoID());
+      if (writingMemo != Memo.nullMemo) {
+        _model.selectMemo(writingMemo);
+        _model.selectCategoryByID(writingMemo.categoryID);
+      }
+    }
   }
 }
 
 class DoneEditButton extends StatelessWidget {
   final Function onTapDone;
+  final MemoScreenViewModel model;
 
-  const DoneEditButton({Key? key, required this.onTapDone}) : super(key: key);
+  const DoneEditButton({Key? key, required this.onTapDone, required this.model})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -206,7 +238,7 @@ class DoneEditButton extends StatelessWidget {
         child: const Icon(Icons.check),
         onTap: () {
           onTapDone();
-          Navigator.pop(context);
+          MemoDetailScreenState.popDetailPage(context, model);
         },
       ),
     );

@@ -1,0 +1,6 @@
+((nil . ((projectile-project-compilation-dir . ".")
+         (projectile-project-compilation-cmd . "makers lint")
+         (projectile-project-run-cmd . "makers run")
+         (projectile-project-test-cmd . "flutter test lib --reporter expanded")
+         (projectile-project-package-cmd . "")
+         )))

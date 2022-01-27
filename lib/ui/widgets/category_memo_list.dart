@@ -2,21 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:yamemo2/business_logic/models/memo.dart';
 import 'package:yamemo2/business_logic/view_models/memo_screen_viewmodel.dart';
 import 'package:yamemo2/constants.dart';
+import 'package:yamemo2/services/service_locator.dart';
 import 'package:yamemo2/ui/views/memo_detail/memo_detail_screen.dart';
 import 'package:yamemo2/utils/log.dart';
 import 'package:yamemo2/yamemo.i18n.dart';
 
 class CategoryMemoList extends StatelessWidget {
-  const CategoryMemoList(Key? key, this._model) : super(key: key);
+  final _model = serviceLocator<MemoScreenViewModel>();
 
-  final MemoScreenViewModel _model;
+  CategoryMemoList({Key? key}) : super(key: key);
 
   static Route<Object?> _memoDetailNavigation(
           BuildContext context, Object? argument) =>
       PageRouteBuilder(
-        pageBuilder: (context, anim1, anim2) => const MemoDetailScreen(
-          screenType: ScreenType.add,
-        ),
+        pageBuilder: (context, anim1, anim2) => const MemoDetailScreen(),
         transitionDuration: const Duration(seconds: 0),
       );
 
@@ -57,7 +56,6 @@ class CategoryMemoList extends StatelessWidget {
                           context,
                           _memoDetailNavigation,
                         );
-                        _model.deselectMemo();
                       },
                       child: Container(
                         decoration: const BoxDecoration(

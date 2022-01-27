@@ -1,0 +1,74 @@
+[config]
+skip_core_tasks = true
+
+[tasks.fvm-install]
+script = '''
+fvm install
+'''
+
+[tasks.run]
+script = '''
+fvm flutter run --flavor prod -t lib/main-prod.dart
+'''
+[tasks.doctor]
+script = '''
+fvm flutter doctor
+'''
+
+[tasks.upgrade]
+script = '''
+fvm flutter pub upgrade
+'''
+
+[tasks.upgrade-major-versions]
+script = '''
+fvm flutter pub upgrade --major-versions
+'''
+
+[tasks.show-outdated]
+script = '''
+fvm flutter pub upgrade
+'''
+
+[tasks.analyze]
+script = '''
+fvm flutter analyze
+'''
+
+[tasks.metrics-analyze]
+script = '''
+fvm flutter pub run dart_code_metrics:metrics analyze lib
+'''
+
+[tasks.lint]
+dependencies = ["format", "analyze", "metrics-analyze"]
+
+[tasks.format]
+script = '''
+fvm dart format --fix lib
+'''
+
+[tasks.test]
+script = '''
+fvm flutter test lib --reporter expanded
+'''
+
+[tasks.clean]
+script = '''
+fvm flutter clean
+'''
+
+[tasks.pub-get]
+script = '''
+fvm flutter pub get
+'''
+
+[tasks.emulator]
+script = '''
+fvm flutter emulators --launch Pixel
+'''
+
+[tasks.build-appbundle]
+script = '''
+fvm flutter build appbundle --flavor prod -t lib/main-prod.dart
+'''
