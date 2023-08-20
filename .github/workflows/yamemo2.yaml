@@ -14,6 +14,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Create configuration files
+        run: |
+          echo "${{ secrets.ENV_DART }}" | base64 --decode > lib/env/env.g.dart
+
       - name: Set up Java
         uses: actions/setup-java@v1
         with:

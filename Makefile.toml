@@ -75,5 +75,10 @@ fvm flutter emulators --launch Pixel
 
 [tasks.build-appbundle]
 script = '''
-fvm flutter build appbundle --flavor prod -t lib/main-prod.dart
+fvm flutter build appbundle --flavor prod -t lib/main-prod.dart  --obfuscate --split-debug-info=obfuscate/android
+'''
+
+[tasks.build_runner_watch]
+script = '''
+fvm flutter pub run build_runner watch --delete-conflicting-outputs
 '''
