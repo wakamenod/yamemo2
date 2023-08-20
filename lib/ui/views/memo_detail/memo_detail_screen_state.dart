@@ -29,22 +29,25 @@ class MemoDetailScreenState extends State<MemoDetailScreen>
   void Function() getSaveFn() {
     if (!_model.isMemoSelected()) {
       return () async {
-        final newMemo =
-            await _model.addMemo(controller.value.text).catchError((e) {
+        try {
+          final newMemo = await _model.addMemo(controller.value.text);
+          _model.updateWritingMemoRecord(newMemo.id ?? 0);
+          _model.selectMemo(newMemo);
+        } catch (e) {
           Fluttertoast.showToast(
               msg: "Unexpected Error.".i18n, backgroundColor: Colors.redAccent);
-        });
-        _model.updateWritingMemoRecord(newMemo.id!);
-        _model.selectMemo(newMemo);
+        }
       };
     }
 
     return () async {
-      _model.updateWritingMemoRecord(_model.selectedMemo.id!);
-      _model.updateSelectedMemo(controller.value.text).catchError((e) {
+      try {
+        _model.updateWritingMemoRecord(_model.selectedMemo.id ?? 0);
+        _model.updateSelectedMemo(controller.value.text);
+      } catch (e) {
         Fluttertoast.showToast(
             msg: "Unexpected Error.".i18n, backgroundColor: Colors.redAccent);
-      });
+      }
     };
   }
 
@@ -200,7 +203,9 @@ class MemoDetailScreenState extends State<MemoDetailScreen>
                       });
                     },
                   ));
-          Navigator.pop(context);
+          if (context.mounted) {
+            Navigator.pop(context);
+          }
         }));
 
     return res;

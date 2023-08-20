@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/foundation.dart';
 import 'package:yamemo2/business_logic/models/memo.dart';
 import 'package:yamemo2/business_logic/models/memo_category.dart';
@@ -10,7 +8,7 @@ import 'package:yamemo2/utils/log.dart';
 class MemoScreenViewModel extends ChangeNotifier {
   final MemoService _memoService = serviceLocator<MemoService>();
   List<MemoCategory> _categories = [];
-  List<Memo> _memos = [];
+  final List<Memo> _memos = [];
   bool isLoading = true;
   Future<List<MemoCategory>>? futureCategories;
   MemoCategory _selectedCategory = MemoCategory.nullCategory;
@@ -178,12 +176,10 @@ class MemoScreenViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  @override
   Future updateWritingMemoRecord(int memoID) async {
     return _memoService.updateWritingMemoRecord(memoID);
   }
 
-  @override
   Future<int> getWritingMemoID() async {
     return _memoService.getWritingMemoID();
   }

@@ -77,4 +77,16 @@ class MemoServiceFake extends MemoService {
   Future updateCategorySortNos(int from, int to) {
     throw UnimplementedError();
   }
+
+  @override
+  Future<int> getWritingMemoID() {
+    // TODO: implement getWritingMemoID
+    throw UnimplementedError();
+  }
+
+  @override
+  Future updateWritingMemoRecord(memoID) {
+    // TODO: implement updateWritingMemoRecord
+    throw UnimplementedError();
+  }
 }

@@ -48,3 +48,6 @@ app.*.map.json
 flavors.dart
 
 .fvm/flutter_sdk
+
+# Android Play Store key
+key.jks

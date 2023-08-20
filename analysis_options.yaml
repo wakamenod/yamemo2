@@ -32,6 +32,8 @@ linter:
 analyzer:
   plugins:
     - dart_code_metrics
+  exclude:
+    - "lib/generated_plugin_registrant.dart"
 
 dart_code_metrics:
   anti-patterns:
