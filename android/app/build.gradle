@@ -69,7 +69,7 @@ android {
     defaultConfig {
         applicationId "net.wakamenod.yamemo2"
         minSdkVersion 19
-        targetSdkVersion flutter.targetSdkVersion
+        targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
