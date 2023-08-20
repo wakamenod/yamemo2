@@ -51,3 +51,5 @@ flavors.dart
 
 # Android Play Store key
 key.jks
+
+coverage

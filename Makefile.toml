@@ -6,6 +6,11 @@ script = '''
 fvm install
 '''
 
+[tasks.install]
+script = '''
+fvm flutter pub get
+'''
+
 [tasks.run]
 script = '''
 fvm flutter run --flavor prod -t lib/main-prod.dart
@@ -50,7 +55,7 @@ fvm dart format --fix lib
 
 [tasks.test]
 script = '''
-fvm flutter test lib --reporter expanded
+fvm flutter test --coverage
 '''
 
 [tasks.clean]
