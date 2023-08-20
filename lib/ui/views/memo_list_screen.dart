@@ -18,7 +18,7 @@ class MemoListScreen extends StatefulWidget {
   const MemoListScreen({Key? key}) : super(key: key);
 
   @override
-  _MemoListScreenState createState() => _MemoListScreenState();
+  State<MemoListScreen> createState() => _MemoListScreenState();
 }
 
 class _MemoListScreenState extends State<MemoListScreen>

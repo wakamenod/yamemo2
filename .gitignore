@@ -45,6 +45,13 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-flavors.dart
-
 .fvm/flutter_sdk
+
+# Android Play Store key
+key.jks
+
+coverage
+
+# env
+.env
+env.g.dart

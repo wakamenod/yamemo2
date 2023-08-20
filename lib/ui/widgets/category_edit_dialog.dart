@@ -15,7 +15,7 @@ class CategoryEditDialog extends StatefulWidget {
   final MemoCategory category;
 
   @override
-  _CategoryEditDialogState createState() => _CategoryEditDialogState();
+  State<CategoryEditDialog> createState() => _CategoryEditDialogState();
 }
 
 class _CategoryEditDialogState extends State<CategoryEditDialog> {

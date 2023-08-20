@@ -6,6 +6,11 @@ script = '''
 fvm install
 '''
 
+[tasks.install]
+script = '''
+fvm flutter pub get
+'''
+
 [tasks.run]
 script = '''
 fvm flutter run --flavor prod -t lib/main-prod.dart
@@ -50,7 +55,7 @@ fvm dart format --fix lib
 
 [tasks.test]
 script = '''
-fvm flutter test lib --reporter expanded
+fvm flutter test --coverage
 '''
 
 [tasks.clean]
@@ -70,5 +75,10 @@ fvm flutter emulators --launch Pixel
 
 [tasks.build-appbundle]
 script = '''
-fvm flutter build appbundle --flavor prod -t lib/main-prod.dart
+fvm flutter build appbundle --flavor prod -t lib/main-prod.dart  --obfuscate --split-debug-info=obfuscate/android
+'''
+
+[tasks.build_runner_watch]
+script = '''
+fvm flutter pub run build_runner watch --delete-conflicting-outputs
 '''

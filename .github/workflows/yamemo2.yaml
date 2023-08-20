@@ -1,0 +1,55 @@
+name: Yamemo2 CI
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Create configuration files
+        run: |
+          echo "${{ secrets.ENV_DART }}" | base64 --decode > lib/env/env.g.dart
+
+      - name: Set up Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: "12.x"
+
+      - name: Setup homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: install fvm
+        run: |
+          brew tap leoafarias/fvm
+          brew install fvm
+
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Set up cargo-make
+        uses: davidB/rust-cargo-make@v1
+        with:
+          version: "0.35.0"
+
+      - name: setup flutter
+        run: cargo make fvm-install
+
+      - name: Flutter pub get
+        run: cargo make install
+
+      - name: Lint
+        run: cargo make lint
+
+      - name: Test
+        run: cargo make test

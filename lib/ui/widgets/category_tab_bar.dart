@@ -29,6 +29,8 @@ class CategoryTabBar extends StatelessWidget implements PreferredSizeWidget {
                 decoration: _model.isSelectedCategory(category)
                     ? selectedDeco
                     : unselectedDeco,
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                height: 35.0,
                 child: Center(
                   child: Text(
                     category.title,
@@ -40,8 +42,6 @@ class CategoryTabBar extends StatelessWidget implements PreferredSizeWidget {
                     ),
                   ),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                height: 35.0,
               ),
             ),
           );
