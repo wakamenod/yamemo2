@@ -17,6 +17,8 @@ jobs:
       - name: Create configuration files
         run: |
           echo "${{ secrets.ENV_DART }}" | base64 --decode > lib/env/env.g.dart
+          echo "${{ secrets.ANDROID_MANIFEST }}" | base64 --decode > android/app/src/main/AndroidManifest.xml
+          echo "${{ secrets.IOS_PLIST }}" | base64 --decode > ios/Runner/Info.plist
 
       - name: Set up Java
         uses: actions/setup-java@v1
