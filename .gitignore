@@ -55,3 +55,6 @@ coverage
 # env
 .env
 env.g.dart
+
+android/app/src/main/AndroidManifest.xml
+ios/Runner/Info.plist
