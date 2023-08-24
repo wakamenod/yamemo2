@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:i18n_extension/i18n_widget.dart';
 
 import 'flavors.dart';
@@ -17,7 +18,9 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.orange,
         visualDensity: VisualDensity.adaptivePlatformDensity,
-        fontFamily: "MPLUSRounded1c",
+        textTheme: GoogleFonts.zenMaruGothicTextTheme(
+          Theme.of(context).textTheme,
+        ),
       ),
       routes: {
         MemoListScreen.id: (context) => const MemoListScreen(),
