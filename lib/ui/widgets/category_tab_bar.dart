@@ -35,7 +35,7 @@ class CategoryTabBar extends StatelessWidget implements PreferredSizeWidget {
                   child: Text(
                     category.title,
                     style: TextStyle(
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                       color: _model.isSelectedCategory(category)
                           ? kBaseColor
                           : Colors.white,
