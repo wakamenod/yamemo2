@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:yamemo2/constants.dart';
 
 import 'package:yamemo2/services/ads/google_mobile_ads_service.dart';
@@ -91,6 +92,30 @@ class _MemoListScreenState extends State<MemoListScreen>
               elevation: 0.0,
               backgroundColor: kBaseColor,
               bottom: CategoryTabBar()),
+          drawer: Drawer(
+            child: ListView(
+              children: <Widget>[
+                const DrawerHeader(
+                  decoration: BoxDecoration(color: kBaseColor),
+                  child: Text('Menu'),
+                ),
+                ListTile(
+                  title: const Text('License'),
+                  onTap: () async {
+                    Navigator.pop(context); // Close the drawer
+                    final packageInfo = await PackageInfo.fromPlatform();
+                    if (context.mounted) {
+                      showLicensePage(
+                        context: context,
+                        applicationName: packageInfo.appName,
+                        applicationVersion: packageInfo.version,
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
           floatingActionButton: Container(
             margin: const EdgeInsets.only(bottom: 50.0),
             child: FloatingActionButton(

@@ -47,6 +47,7 @@ dependencies:
   flutter_flavorizr: ^2.1.2
   envied: ^0.3.0+3
   google_fonts: ^4.0.4
+  package_info_plus: ^4.1.0
 
 dev_dependencies:
   flutter_test:
