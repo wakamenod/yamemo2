@@ -82,3 +82,8 @@ fvm flutter build appbundle --flavor prod -t lib/main-prod.dart  --obfuscate --s
 script = '''
 fvm flutter pub run build_runner watch --delete-conflicting-outputs
 '''
+
+[tasks.ipa-upload]
+script = '''
+fvm flutter build ipa --flavor prod -t lib/main-prod.dart --export-options-plist="ios/configs/ExportOptions.plist"
+'''
