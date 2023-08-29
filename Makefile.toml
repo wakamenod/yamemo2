@@ -87,3 +87,9 @@ fvm flutter pub run build_runner watch --delete-conflicting-outputs
 script = '''
 fvm flutter build ipa --flavor prod -t lib/main-prod.dart --export-options-plist="ios/configs/ExportOptions.plist"
 '''
+
+[tasks.icon]
+script = '''
+# androidはassetsだけ用意して取り込んでないので差分が出る
+fvm flutter pub run flutter_launcher_icons
+'''
