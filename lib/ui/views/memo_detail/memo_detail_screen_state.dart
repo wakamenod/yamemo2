@@ -194,6 +194,8 @@ class MemoDetailScreenState extends State<MemoDetailScreen>
         onPressed: () async {
           await showModalBottomSheet<String>(
               context: context,
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
               builder: (context) => AddCategoryScreen(
                     onAddCateogry: (newCategory) {
                       model.addCategory(newCategory).catchError((e) {
