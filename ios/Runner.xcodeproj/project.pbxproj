@@ -538,6 +538,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0B246CAA88107CA867C7C49B /* Pods-Runner.debug-prod.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = P3SP6B39C2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.yamemo2;
 				PRODUCT_NAME = Runner;
 			};
@@ -547,6 +548,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CEC1AFA4B457D0CD8900EA7E /* Pods-Runner.profile-prod.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = P3SP6B39C2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.yamemo2;
 				PRODUCT_NAME = Runner;
 			};
@@ -556,6 +558,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 933D16D90716D06BFD227F07 /* Pods-Runner.release-prod.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = P3SP6B39C2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.yamemo2;
 				PRODUCT_NAME = Runner;
 			};
