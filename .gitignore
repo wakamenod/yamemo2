@@ -46,8 +46,6 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-.fvm/flutter_sdk
-
 # Android Play Store key
 key.jks
 
@@ -59,3 +57,6 @@ env.g.dart
 
 android/app/src/main/AndroidManifest.xml
 ios/Runner/Info.plist
+
+# FVM Version Cache
+.fvm/
