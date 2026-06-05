@@ -499,7 +499,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.yamemo2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.apps.yamemo2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -539,7 +539,7 @@
 			baseConfigurationReference = 0B246CAA88107CA867C7C49B /* Pods-Runner.debug-prod.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = P66UA57R35;
-				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.yamemo2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.apps.yamemo2;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Debug-prod";
@@ -549,7 +549,7 @@
 			baseConfigurationReference = CEC1AFA4B457D0CD8900EA7E /* Pods-Runner.profile-prod.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = P66UA57R35;
-				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.yamemo2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.apps.yamemo2;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Profile-prod";
@@ -559,7 +559,7 @@
 			baseConfigurationReference = 933D16D90716D06BFD227F07 /* Pods-Runner.release-prod.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = P66UA57R35;
-				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.yamemo2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.apps.yamemo2;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Release-prod";
@@ -828,7 +828,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.yamemo2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.apps.yamemo2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -851,7 +851,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.yamemo2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.apps.yamemo2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

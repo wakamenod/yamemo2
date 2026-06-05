@@ -117,18 +117,18 @@ flavorizr:
         name: "Yamemo2(Dev)"
 
       android:
-        applicationId: "com.wakamenod.yamemo.dev"
+        applicationId: "com.wakamenod.apps.yamemo.dev"
       ios:
-        bundleId: "com.wakamenod.yamemo.dev"
+        bundleId: "com.wakamenod.apps.yamemo.dev"
 
     prod:
       app:
         name: "Yamemo2"
 
       android:
-        applicationId: "com.wakamenod.yamemo"
+        applicationId: "com.wakamenod.apps.yamemo"
       ios:
-        bundleId: "com.wakamenod.yamemo"
+        bundleId: "com.wakamenod.apps.yamemo"
 
 flutter_launcher_icons:
   android: "launcher_icon"
