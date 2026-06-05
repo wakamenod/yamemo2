@@ -8,7 +8,7 @@ import 'flavors.dart';
 import 'ui/views/memo_list_screen.dart';
 
 class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +52,7 @@ class App extends StatelessWidget {
           ? Banner(
               location: BannerLocation.topStart,
               message: F.name,
-              color: Colors.green.withOpacity(0.6),
+              color: Colors.green.withValues(alpha: 0.6),
               textStyle: const TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 12.0,

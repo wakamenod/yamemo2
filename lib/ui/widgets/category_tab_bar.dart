@@ -11,7 +11,7 @@ import 'category_edit_dialog.dart';
 class CategoryTabBar extends StatelessWidget implements PreferredSizeWidget {
   final _model = serviceLocator<MemoScreenViewModel>();
 
-  CategoryTabBar({Key? key}) : super(key: key);
+  CategoryTabBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -85,8 +85,7 @@ class CategoryTabBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class CategoryIndexEdit extends StatelessWidget {
-  const CategoryIndexEdit({Key? key, required this.max, required this.position})
-      : super(key: key);
+  const CategoryIndexEdit({super.key, required this.max, required this.position});
 
   final int max;
   final int position;
@@ -116,8 +115,7 @@ class CategoryIndexEdit extends StatelessWidget {
 }
 
 class CategoryNameEdit extends StatelessWidget {
-  const CategoryNameEdit({Key? key, required this.controller})
-      : super(key: key);
+  const CategoryNameEdit({super.key, required this.controller});
 
   final TextEditingController controller;
 

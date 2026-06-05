@@ -4,8 +4,7 @@ import 'package:yamemo2/constants.dart';
 
 class AddCategoryScreen extends StatefulWidget {
   final Function(String) onAddCateogry;
-  const AddCategoryScreen({Key? key, required this.onAddCateogry})
-      : super(key: key);
+  const AddCategoryScreen({super.key, required this.onAddCateogry});
 
   @override
   State<AddCategoryScreen> createState() => _AddCategoryScreenState();

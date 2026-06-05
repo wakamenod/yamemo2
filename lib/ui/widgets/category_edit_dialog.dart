@@ -8,8 +8,7 @@ import 'package:yamemo2/yamemo.i18n.dart';
 
 class CategoryEditDialog extends StatefulWidget {
   const CategoryEditDialog(
-      {Key? key, required this.baseContext, required this.category})
-      : super(key: key);
+      {super.key, required this.baseContext, required this.category});
 
   final BuildContext baseContext;
   final MemoCategory category;
@@ -65,10 +64,12 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
                     _model
                         .updateCategory(controller.text, selectedPosition)
                         .catchError((e) {
+                      if (!context.mounted) return;
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text("Unexpected Error.".i18n),
                           backgroundColor: Colors.redAccent));
                     }).whenComplete(() {
+                      if (!context.mounted) return;
                       Navigator.of(widget.baseContext).pop(true);
                     });
                   },
@@ -149,6 +150,7 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
                     _model.deleteCategory(category).catchError((e) {
                       isError = true;
                     }).whenComplete(() {
+                      if (!dialogContext.mounted) return;
                       Navigator.of(dialogContext).pop(true);
                       ScaffoldMessenger.of(dialogContext)
                           .showSnackBar(snackBarWhenComplete(isError));
