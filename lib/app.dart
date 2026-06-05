@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:i18n_extension/i18n_extension.dart';
 
 import 'flavors.dart';
+import 'ui/views/backup_screen.dart';
 import 'ui/views/memo_list_screen.dart';
 
 class App extends StatelessWidget {
@@ -26,6 +27,7 @@ class App extends StatelessWidget {
         ),
         routes: {
           MemoListScreen.id: (context) => const MemoListScreen(),
+          BackupScreen.id: (context) => const BackupScreen(),
         },
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,

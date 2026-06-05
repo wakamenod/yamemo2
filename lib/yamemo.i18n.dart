@@ -58,6 +58,14 @@ extension Localization on String {
       {
         "en-US": "Confirm",
         "ja-JP": "確認",
+      } +
+      {
+        "en-US": "Backup",
+        "ja-JP": "バックアップ",
+      } +
+      {
+        "en-US": "Backup description",
+        "ja-JP": "バックアップとリストアの管理ができます。",
       };
 
   String get i18n => localize(this, _t);

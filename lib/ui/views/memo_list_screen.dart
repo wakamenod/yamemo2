@@ -8,8 +8,10 @@ import 'package:yamemo2/services/service_locator.dart';
 import 'package:yamemo2/business_logic/view_models/memo_screen_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:yamemo2/ui/views/memo_detail/memo_detail_screen.dart';
+import 'package:yamemo2/ui/views/backup_screen.dart';
 import 'package:yamemo2/ui/widgets/category_tab_bar.dart';
 import 'package:yamemo2/ui/widgets/category_memo_list.dart';
+import 'package:yamemo2/yamemo.i18n.dart';
 
 import 'package:yamemo2/utils/log.dart';
 
@@ -98,6 +100,14 @@ class _MemoListScreenState extends State<MemoListScreen>
                 const DrawerHeader(
                   decoration: BoxDecoration(color: kBaseColor),
                   child: Text('Menu'),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.backup),
+                  title: Text('Backup'.i18n),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, BackupScreen.id);
+                  },
                 ),
                 ListTile(
                   title: const Text('License'),
