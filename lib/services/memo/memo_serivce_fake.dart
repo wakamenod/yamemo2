@@ -17,24 +17,9 @@ class MemoServiceFake extends MemoService {
   @override
   Future<List<MemoCategory>> getAllCategories(bool forceDiskFetch) async {
     return [
-      MemoCategory(
-        title: "Fake 1",
-        id: 0,
-        memos: [],
-        sortNo: 0,
-      ),
-      MemoCategory(
-        title: "Fake 2",
-        id: 1,
-        memos: [],
-        sortNo: 1,
-      ),
-      MemoCategory(
-        title: "Fake 3",
-        id: 2,
-        memos: [],
-        sortNo: 2,
-      ),
+      MemoCategory(title: "Fake 1", id: 0, memos: [], sortNo: 0),
+      MemoCategory(title: "Fake 2", id: 1, memos: [], sortNo: 1),
+      MemoCategory(title: "Fake 3", id: 2, memos: [], sortNo: 2),
     ];
   }
 
@@ -87,6 +72,16 @@ class MemoServiceFake extends MemoService {
   @override
   Future updateWritingMemoRecord(memoID) {
     // TODO: implement updateWritingMemoRecord
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Map<String, dynamic>> exportBackup() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> importBackup(Map<String, dynamic> data) {
     throw UnimplementedError();
   }
 }

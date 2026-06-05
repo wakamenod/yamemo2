@@ -8,17 +8,14 @@ class MemoCategory {
   int sortNo;
   final List<Memo> memos;
 
-  MemoCategory(
-      {required this.id,
-      required this.title,
-      required this.memos,
-      required this.sortNo});
+  MemoCategory({
+    required this.id,
+    required this.title,
+    required this.memos,
+    required this.sortNo,
+  });
 
-  MemoCategory._empty()
-      : id = 0,
-        title = '',
-        sortNo = 0,
-        memos = [];
+  MemoCategory._empty() : id = 0, title = '', sortNo = 0, memos = [];
 
   factory MemoCategory.fromMap(Map<String, dynamic> el, List<Memo> ms) =>
       MemoCategory(
@@ -29,11 +26,7 @@ class MemoCategory {
       );
 
   Map<String, dynamic> toMap() {
-    return {
-      'id': id == 0 ? null : id,
-      'title': title,
-      'sort_no': sortNo,
-    };
+    return {'id': id == 0 ? null : id, 'title': title, 'sort_no': sortNo};
   }
 
   int get memoCount {

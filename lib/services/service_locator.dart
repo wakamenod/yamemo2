@@ -12,8 +12,10 @@ void setupServiceLocator(Future<InitializationStatus> adsInitFuture) {
   // serviceLocator.registerLazySingleton<MemoService>(() => MemoServiceFake());
   serviceLocator.registerLazySingleton<MemoService>(() => MemoServiceSQLite());
   serviceLocator.registerLazySingleton<GoogleMobileAdsService>(
-      () => GoogleMobileAdsService(adsInitFuture));
+    () => GoogleMobileAdsService(adsInitFuture),
+  );
 
-  serviceLocator
-      .registerLazySingleton<MemoScreenViewModel>(() => MemoScreenViewModel());
+  serviceLocator.registerLazySingleton<MemoScreenViewModel>(
+    () => MemoScreenViewModel(),
+  );
 }

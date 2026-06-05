@@ -58,11 +58,7 @@ class CategoryTabBar extends StatelessWidget implements PreferredSizeWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 height: 35.0,
                 child: const Center(
-                  child: Icon(
-                    Icons.add,
-                    color: Colors.white,
-                    size: 20.0,
-                  ),
+                  child: Icon(Icons.add, color: Colors.white, size: 20.0),
                 ),
               ),
             ),
@@ -80,15 +76,17 @@ class CategoryTabBar extends StatelessWidget implements PreferredSizeWidget {
   Decoration get selectedDeco {
     return const BoxDecoration(
       borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+        topLeft: Radius.circular(10),
+        topRight: Radius.circular(10),
+      ),
       color: kBaseBgColor,
     );
   }
 
   Decoration get unselectedDeco {
     return const BoxDecoration(
-        // color: kBaseColor
-        );
+      // color: kBaseColor
+    );
   }
 
   Future _showAddCategorySheet(BuildContext context) async {
@@ -114,18 +112,20 @@ class CategoryTabBar extends StatelessWidget implements PreferredSizeWidget {
     MemoCategory category = _model.getCategoryAt(idx);
 
     return await showDialog(
-        context: ctx,
-        builder: (BuildContext context) {
-          return CategoryEditDialog(
-            baseContext: ctx,
-            category: category,
-          );
-        });
+      context: ctx,
+      builder: (BuildContext context) {
+        return CategoryEditDialog(baseContext: ctx, category: category);
+      },
+    );
   }
 }
 
 class CategoryIndexEdit extends StatelessWidget {
-  const CategoryIndexEdit({super.key, required this.max, required this.position});
+  const CategoryIndexEdit({
+    super.key,
+    required this.max,
+    required this.position,
+  });
 
   final int max;
   final int position;
@@ -138,16 +138,18 @@ class CategoryIndexEdit extends StatelessWidget {
         children: [
           Expanded(child: Text("Position: ".i18n)),
           SizedBox(
-              width: 150,
-              child: SpinBox(
-                value: position.toDouble(),
-                max: max.toDouble(),
-                min: 1,
-                decoration: const InputDecoration(
-                    enabledBorder: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    border: InputBorder.none),
-              )),
+            width: 150,
+            child: SpinBox(
+              value: position.toDouble(),
+              max: max.toDouble(),
+              min: 1,
+              decoration: const InputDecoration(
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                border: InputBorder.none,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -169,20 +171,21 @@ class CategoryNameEdit extends StatelessWidget {
           SizedBox(
             width: 150,
             child: TextField(
-                autofocus: true,
-                textAlign: TextAlign.center,
-                controller: controller,
-                decoration: const InputDecoration(
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: kBaseColor),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: kBaseColor),
-                  ),
-                  border: UnderlineInputBorder(
-                    borderSide: BorderSide(color: kBaseColor),
-                  ),
-                )),
+              autofocus: true,
+              textAlign: TextAlign.center,
+              controller: controller,
+              decoration: const InputDecoration(
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: kBaseColor),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: kBaseColor),
+                ),
+                border: UnderlineInputBorder(
+                  borderSide: BorderSide(color: kBaseColor),
+                ),
+              ),
+            ),
           ),
         ],
       ),

@@ -34,6 +34,7 @@ analyzer:
     - dart_code_metrics
   exclude:
     - "lib/generated_plugin_registrant.dart"
+    - "build/**"
 
 dart_code_metrics:
   anti-patterns:

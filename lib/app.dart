@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:i18n_extension/i18n_extension.dart';
 
 import 'flavors.dart';
+import 'ui/views/backup_screen.dart';
 import 'ui/views/memo_list_screen.dart';
 
 class App extends StatelessWidget {
@@ -26,41 +27,31 @@ class App extends StatelessWidget {
         ),
         routes: {
           MemoListScreen.id: (context) => const MemoListScreen(),
+          BackupScreen.id: (context) => const BackupScreen(),
         },
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: const [
-          Locale('en', "US"),
-          Locale('ja', "JP"),
-        ],
-        home: _flavorBanner(
-          child: const MemoListScreen(),
-          show: kDebugMode,
-        ),
+        supportedLocales: const [Locale('en', "US"), Locale('ja', "JP")],
+        home: _flavorBanner(child: const MemoListScreen(), show: kDebugMode),
       ),
     );
   }
 
-  Widget _flavorBanner({
-    required Widget child,
-    bool show = true,
-  }) =>
-      show
-          ? Banner(
-              location: BannerLocation.topStart,
-              message: F.name,
-              color: Colors.green.withValues(alpha: 0.6),
-              textStyle: const TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 12.0,
-                  letterSpacing: 1.0),
-              textDirection: TextDirection.ltr,
-              child: child,
-            )
-          : Container(
-              child: child,
-            );
+  Widget _flavorBanner({required Widget child, bool show = true}) => show
+      ? Banner(
+          location: BannerLocation.topStart,
+          message: F.name,
+          color: Colors.green.withValues(alpha: 0.6),
+          textStyle: const TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 12.0,
+            letterSpacing: 1.0,
+          ),
+          textDirection: TextDirection.ltr,
+          child: child,
+        )
+      : Container(child: child);
 }

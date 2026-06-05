@@ -10,8 +10,9 @@ import 'flavors.dart';
 
 void main() {
   LicenseRegistry.addLicense(() async* {
-    final zenMaruGothic =
-        await rootBundle.loadString('assets/google_fonts/OFL.txt');
+    final zenMaruGothic = await rootBundle.loadString(
+      'assets/google_fonts/OFL.txt',
+    );
     yield LicenseEntryWithLineBreaks(['zen_maru_gothic'], zenMaruGothic);
   });
 

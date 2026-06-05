@@ -9,6 +9,7 @@ import 'package:yamemo2/services/service_locator.dart';
 import 'package:yamemo2/ui/views/add_category_screen.dart';
 import 'package:yamemo2/ui/views/memo_detail/memo_detail_screen.dart';
 import 'package:yamemo2/yamemo.i18n.dart';
+import 'package:yamemo2/utils/log.dart';
 
 import '../../../business_logic/models/memo.dart';
 
@@ -34,8 +35,11 @@ class MemoDetailScreenState extends State<MemoDetailScreen>
           _model.updateWritingMemoRecord(newMemo.id ?? 0);
           _model.selectMemo(newMemo);
         } catch (e) {
+          LOG.info('Error saving memo: $e');
           Fluttertoast.showToast(
-              msg: "Unexpected Error.".i18n, backgroundColor: Colors.redAccent);
+            msg: '${'Unexpected Error.'.i18n}\n$e',
+            backgroundColor: Colors.redAccent,
+          );
         }
       };
     }
@@ -45,8 +49,11 @@ class MemoDetailScreenState extends State<MemoDetailScreen>
         _model.updateWritingMemoRecord(_model.selectedMemo.id ?? 0);
         _model.updateSelectedMemo(controller.value.text);
       } catch (e) {
+        LOG.info('Error saving memo: $e');
         Fluttertoast.showToast(
-            msg: "Unexpected Error.".i18n, backgroundColor: Colors.redAccent);
+          msg: '${'Unexpected Error.'.i18n}\n$e',
+          backgroundColor: Colors.redAccent,
+        );
       }
     };
   }
@@ -69,47 +76,49 @@ class MemoDetailScreenState extends State<MemoDetailScreen>
     }
     return ChangeNotifierProvider.value(
       value: _model,
-      child: Consumer<MemoScreenViewModel>(builder: (context, value, child) {
-        return Scaffold(
-          appBar: AppBar(
-            elevation: 0.0,
-            backgroundColor: kBaseColor,
-            leading: BackButton(
-              onPressed: () {
-                popDetailPage(context, _model);
-              },
-            ),
-            actions: <Widget>[
-              DoneEditButton(model: _model, onTapDone: () => getSaveFn()),
-            ],
-          ),
-          body: Container(
-            color: kBaseBgColor,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 13, top: 8, bottom: 8),
-                  child: GestureDetector(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => buildDialog(value, context),
-                      );
-                    },
-                    child: Row(
-                      children: [
-                        Text('${value.selectedCategory.title} '),
-                        const Icon(Icons.arrow_drop_down),
-                      ],
-                    ),
-                  ),
-                ),
-                buildContentForm(),
+      child: Consumer<MemoScreenViewModel>(
+        builder: (context, value, child) {
+          return Scaffold(
+            appBar: AppBar(
+              elevation: 0.0,
+              backgroundColor: kBaseColor,
+              leading: BackButton(
+                onPressed: () {
+                  popDetailPage(context, _model);
+                },
+              ),
+              actions: <Widget>[
+                DoneEditButton(model: _model, onTapDone: () => getSaveFn()),
               ],
             ),
-          ),
-        );
-      }),
+            body: Container(
+              color: kBaseBgColor,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 13, top: 8, bottom: 8),
+                    child: GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => buildDialog(value, context),
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          Text('${value.selectedCategory.title} '),
+                          const Icon(Icons.arrow_drop_down),
+                        ],
+                      ),
+                    ),
+                  ),
+                  buildContentForm(),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -141,8 +150,10 @@ class MemoDetailScreenState extends State<MemoDetailScreen>
             // maxLengthEnforced: true,
             //initialValue: _content,
             decoration: const InputDecoration(
-              contentPadding:
-                  EdgeInsets.symmetric(vertical: -10.0, horizontal: 5.0),
+              contentPadding: EdgeInsets.symmetric(
+                vertical: -10.0,
+                horizontal: 5.0,
+              ),
               isDense: true,
               border: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.transparent),
@@ -156,8 +167,10 @@ class MemoDetailScreenState extends State<MemoDetailScreen>
               labelText: '',
               hintText: 'Enter content',
               alignLabelWithHint: true,
-              labelStyle:
-                  TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+              labelStyle: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.w500,
+              ),
             ),
             validator: (value) => (value != null && value.isNotEmpty)
                 ? null
@@ -178,37 +191,45 @@ class MemoDetailScreenState extends State<MemoDetailScreen>
   }
 
   List<SimpleDialogOption> dialogOptions(
-      MemoScreenViewModel model, BuildContext context) {
+    MemoScreenViewModel model,
+    BuildContext context,
+  ) {
     var res = List<SimpleDialogOption>.generate(
-        model.categoryCount,
-        (index) => SimpleDialogOption(
-              onPressed: () async {
-                model.selectCategoryAt(index);
-                popDetailPage(context, model);
-              },
-              child: Text(model.getCategoryAt(index).title),
-            ));
+      model.categoryCount,
+      (index) => SimpleDialogOption(
+        onPressed: () async {
+          model.selectCategoryAt(index);
+          popDetailPage(context, model);
+        },
+        child: Text(model.getCategoryAt(index).title),
+      ),
+    );
 
-    res.add(SimpleDialogOption(
+    res.add(
+      SimpleDialogOption(
         child: Text('Add New Category'.i18n),
         onPressed: () async {
           await showModalBottomSheet<String>(
-              context: context,
-              isScrollControlled: true,
-              backgroundColor: Colors.transparent,
-              builder: (context) => AddCategoryScreen(
-                    onAddCateogry: (newCategory) {
-                      model.addCategory(newCategory).catchError((e) {
-                        Fluttertoast.showToast(
-                            msg: "Unexpected Error.".i18n,
-                            backgroundColor: Colors.redAccent);
-                      });
-                    },
-                  ));
+            context: context,
+            isScrollControlled: true,
+            backgroundColor: Colors.transparent,
+            builder: (context) => AddCategoryScreen(
+              onAddCateogry: (newCategory) {
+                model.addCategory(newCategory).catchError((e) {
+                  Fluttertoast.showToast(
+                    msg: "Unexpected Error.".i18n,
+                    backgroundColor: Colors.redAccent,
+                  );
+                });
+              },
+            ),
+          );
           if (context.mounted) {
             Navigator.pop(context);
           }
-        }));
+        },
+      ),
+    );
 
     return res;
   }
@@ -218,7 +239,9 @@ class MemoDetailScreenState extends State<MemoDetailScreen>
 
   @override
   Future<void> restoreState(
-      RestorationBucket? oldBucket, bool initialRestore) async {
+    RestorationBucket? oldBucket,
+    bool initialRestore,
+  ) async {
     registerForRestoration(controller, 'memo_detail_text');
     if (!initialRestore) {
       final writingMemo = _model.getMemoByID(await _model.getWritingMemoID());
@@ -234,7 +257,11 @@ class DoneEditButton extends StatelessWidget {
   final Function onTapDone;
   final MemoScreenViewModel model;
 
-  const DoneEditButton({super.key, required this.onTapDone, required this.model});
+  const DoneEditButton({
+    super.key,
+    required this.onTapDone,
+    required this.model,
+  });
 
   @override
   Widget build(BuildContext context) {
