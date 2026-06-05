@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:yamemo2/business_logic/models/memo_category.dart';
 import 'package:yamemo2/business_logic/view_models/memo_screen_viewmodel.dart';
 import 'package:yamemo2/constants.dart';
 import 'package:yamemo2/services/service_locator.dart';
+import 'package:yamemo2/ui/views/add_category_screen.dart';
 import 'package:yamemo2/yamemo.i18n.dart';
 
 import 'category_edit_dialog.dart';
@@ -18,34 +20,54 @@ class CategoryTabBar extends StatelessWidget implements PreferredSizeWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
-        children: List<Widget>.generate(_model.categoryCount, (int index) {
-          var category = _model.getCategoryAt(index);
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: GestureDetector(
-              onLongPress: () => showCategoryEditDialog(context, index),
-              onTap: () => _model.selectCategoryAt(index),
-              child: Container(
-                decoration: _model.isSelectedCategory(category)
-                    ? selectedDeco
-                    : unselectedDeco,
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                height: 35.0,
-                child: Center(
-                  child: Text(
-                    category.title,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: _model.isSelectedCategory(category)
-                          ? kBaseColor
-                          : Colors.white,
+        children: [
+          ...List<Widget>.generate(_model.categoryCount, (int index) {
+            var category = _model.getCategoryAt(index);
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: GestureDetector(
+                onLongPress: () => showCategoryEditDialog(context, index),
+                onTap: () => _model.selectCategoryAt(index),
+                child: Container(
+                  decoration: _model.isSelectedCategory(category)
+                      ? selectedDeco
+                      : unselectedDeco,
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  height: 35.0,
+                  child: Center(
+                    child: Text(
+                      category.title,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: _model.isSelectedCategory(category)
+                            ? kBaseColor
+                            : Colors.white,
+                      ),
                     ),
                   ),
                 ),
               ),
+            );
+          }),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: GestureDetector(
+              onTap: () => _showAddCategorySheet(context),
+              child: Container(
+                decoration: unselectedDeco,
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                height: 35.0,
+                child: const Center(
+                  child: Icon(
+                    Icons.add,
+                    color: Colors.white,
+                    size: 20.0,
+                  ),
+                ),
+              ),
             ),
-          );
-        }),
+          ),
+        ],
       ),
     );
   }
@@ -67,6 +89,24 @@ class CategoryTabBar extends StatelessWidget implements PreferredSizeWidget {
     return const BoxDecoration(
         // color: kBaseColor
         );
+  }
+
+  Future _showAddCategorySheet(BuildContext context) async {
+    await showModalBottomSheet<String>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => AddCategoryScreen(
+        onAddCateogry: (newCategory) {
+          _model.addCategory(newCategory).catchError((e) {
+            Fluttertoast.showToast(
+              msg: "Unexpected Error.".i18n,
+              backgroundColor: Colors.redAccent,
+            );
+          });
+        },
+      ),
+    );
   }
 
   Future showCategoryEditDialog(BuildContext ctx, int idx) async {
