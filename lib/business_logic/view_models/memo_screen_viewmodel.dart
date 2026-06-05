@@ -53,8 +53,10 @@ class MemoScreenViewModel extends ChangeNotifier {
   }
 
   Memo getMemoByID(int memoID) {
-    return _memos.firstWhere((element) => element.id == memoID,
-        orElse: () => Memo.nullMemo);
+    return _memos.firstWhere(
+      (element) => element.id == memoID,
+      orElse: () => Memo.nullMemo,
+    );
   }
 
   Future deleteCategory(MemoCategory category) async {
@@ -113,8 +115,9 @@ class MemoScreenViewModel extends ChangeNotifier {
   }
 
   Future addCategory(String title) async {
-    var res = await _memoService
-        .addCategory(MemoCategory(id: 0, sortNo: 0, title: title, memos: []));
+    var res = await _memoService.addCategory(
+      MemoCategory(id: 0, sortNo: 0, title: title, memos: []),
+    );
     _categories.add(res);
     selectCategory(res);
     notifyListeners();
@@ -136,8 +139,9 @@ class MemoScreenViewModel extends ChangeNotifier {
 
   Future<Memo> addMemo(String content) async {
     var selectedCategoryID = _selectedCategory.id;
-    var res = await _memoService
-        .addMemo(Memo(content: content, categoryID: selectedCategoryID));
+    var res = await _memoService.addMemo(
+      Memo(content: content, categoryID: selectedCategoryID),
+    );
     _selectedCategory.memos.add(res);
     notifyListeners();
     return res;
@@ -150,12 +154,15 @@ class MemoScreenViewModel extends ChangeNotifier {
     memoMap["content"] = content;
     memoMap["category_id"] = categoryID;
 
-    await _memoService.updateMemo(memoMap).catchError((e) {
-      LOG.warn(e);
-      throw e;
-    }).whenComplete(() {
-      loadData();
-    });
+    await _memoService
+        .updateMemo(memoMap)
+        .catchError((e) {
+          LOG.warn(e);
+          throw e;
+        })
+        .whenComplete(() {
+          loadData();
+        });
   }
 
   Memo get selectedMemo {

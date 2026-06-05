@@ -72,80 +72,80 @@ class _MemoListScreenState extends State<MemoListScreen>
   }
 
   static Route<Object?> _memoDetailNavigation(
-          BuildContext context, Object? argument) =>
-      PageRouteBuilder(
-        pageBuilder: (context, anim1, anim2) => const MemoDetailScreen(),
-        transitionDuration: const Duration(seconds: 0),
-      );
+    BuildContext context,
+    Object? argument,
+  ) => PageRouteBuilder(
+    pageBuilder: (context, anim1, anim2) => const MemoDetailScreen(),
+    transitionDuration: const Duration(seconds: 0),
+  );
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<MemoScreenViewModel>(
       create: (context) => _model,
-      child: Consumer<MemoScreenViewModel>(builder: (context, value, child) {
-        LOG.info('build memo list. isLoading=${value.isLoading}');
-        if (value.isLoading) {
-          return Container(
-            color: kBaseBgColor,
-          );
-        }
-        return Scaffold(
-          appBar: AppBar(
+      child: Consumer<MemoScreenViewModel>(
+        builder: (context, value, child) {
+          LOG.info('build memo list. isLoading=${value.isLoading}');
+          if (value.isLoading) {
+            return Container(color: kBaseBgColor);
+          }
+          return Scaffold(
+            appBar: AppBar(
               elevation: 0.0,
               backgroundColor: kBaseColor,
-              bottom: CategoryTabBar()),
-          drawer: Drawer(
-            child: ListView(
-              children: <Widget>[
-                const DrawerHeader(
-                  decoration: BoxDecoration(color: kBaseColor),
-                  child: Text('Menu'),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.backup),
-                  title: Text('Backup'.i18n),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.pushNamed(context, BackupScreen.id);
-                  },
-                ),
-                ListTile(
-                  title: const Text('License'),
-                  onTap: () async {
-                    Navigator.pop(context); // Close the drawer
-                    final packageInfo = await PackageInfo.fromPlatform();
-                    if (context.mounted) {
-                      showLicensePage(
-                        context: context,
-                        applicationName: packageInfo.appName,
-                        applicationVersion: packageInfo.version,
-                      );
-                    }
-                  },
-                ),
-              ],
+              bottom: CategoryTabBar(),
             ),
-          ),
-          floatingActionButton: Container(
-            margin: const EdgeInsets.only(bottom: 50.0),
-            child: FloatingActionButton(
+            drawer: Drawer(
+              child: ListView(
+                children: <Widget>[
+                  const DrawerHeader(
+                    decoration: BoxDecoration(color: kBaseColor),
+                    child: Text('Menu'),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.backup),
+                    title: Text('Backup'.i18n),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.pushNamed(context, BackupScreen.id);
+                    },
+                  ),
+                  ListTile(
+                    title: const Text('License'),
+                    onTap: () async {
+                      Navigator.pop(context); // Close the drawer
+                      final packageInfo = await PackageInfo.fromPlatform();
+                      if (context.mounted) {
+                        showLicensePage(
+                          context: context,
+                          applicationName: packageInfo.appName,
+                          applicationVersion: packageInfo.version,
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+            floatingActionButton: Container(
+              margin: const EdgeInsets.only(bottom: 50.0),
+              child: FloatingActionButton(
                 backgroundColor: kBaseColor,
                 child: const Icon(Icons.add),
                 onPressed: () async {
-                  Navigator.restorablePush(
-                    context,
-                    _memoDetailNavigation,
-                  );
-                }),
-          ),
-          body: Column(
-            children: [
-              Expanded(child: CategoryMemoList()),
-              createAd(),
-            ],
-          ),
-        );
-      }),
+                  Navigator.restorablePush(context, _memoDetailNavigation);
+                },
+              ),
+            ),
+            body: Column(
+              children: [
+                Expanded(child: CategoryMemoList()),
+                createAd(),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -156,6 +156,7 @@ class _MemoListScreenState extends State<MemoListScreen>
         : SizedBox(
             width: bannerAd.size.width.toDouble(),
             height: bannerAd.size.height.toDouble(),
-            child: AdWidget(ad: bannerAd));
+            child: AdWidget(ad: bannerAd),
+          );
   }
 }

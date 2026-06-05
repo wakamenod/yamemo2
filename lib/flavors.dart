@@ -1,9 +1,6 @@
 import 'package:yamemo2/env/env.dart';
 
-enum Flavor {
-  kDev,
-  kProd,
-}
+enum Flavor { kDev, kProd }
 
 class F {
   static Flavor? appFlavor;

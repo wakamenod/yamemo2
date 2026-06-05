@@ -28,11 +28,12 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
         child: Container(
           padding: const EdgeInsets.all(20.0),
           decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20.0),
-                topRight: Radius.circular(20.0),
-              )),
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.0),
+              topRight: Radius.circular(20.0),
+            ),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -42,20 +43,21 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                 style: const TextStyle(fontSize: 30.0, color: kBaseColor),
               ),
               TextField(
-                  autofocus: true,
-                  textAlign: TextAlign.center,
-                  controller: _controller,
-                  decoration: const InputDecoration(
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: kBaseColor),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: kBaseColor),
-                    ),
-                    border: UnderlineInputBorder(
-                      borderSide: BorderSide(color: kBaseColor),
-                    ),
-                  )),
+                autofocus: true,
+                textAlign: TextAlign.center,
+                controller: _controller,
+                decoration: const InputDecoration(
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: kBaseColor),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: kBaseColor),
+                  ),
+                  border: UnderlineInputBorder(
+                    borderSide: BorderSide(color: kBaseColor),
+                  ),
+                ),
+              ),
               TextButton(
                 style: TextButton.styleFrom(backgroundColor: kBaseColor),
                 onPressed: () {
