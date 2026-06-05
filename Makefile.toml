@@ -13,6 +13,7 @@ fvm flutter pub get
 
 [tasks.run]
 script = '''
+unset CC CXX
 fvm flutter run --flavor prod -t lib/main-prod.dart
 '''
 [tasks.doctor]
@@ -75,6 +76,7 @@ fvm flutter emulators --launch Pixel
 
 [tasks.build-appbundle]
 script = '''
+unset CC CXX
 fvm flutter build appbundle --flavor prod -t lib/main-prod.dart  --obfuscate --split-debug-info=obfuscate/android
 '''
 
@@ -85,6 +87,7 @@ fvm flutter pub run build_runner watch --delete-conflicting-outputs
 
 [tasks.ipa-upload]
 script = '''
+unset CC CXX
 fvm flutter build ipa --flavor prod -t lib/main-prod.dart --export-options-plist="ios/configs/ExportOptions.plist"
 '''
 

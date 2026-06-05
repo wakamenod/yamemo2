@@ -492,14 +492,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = P3SP6B39C2;
+				DEVELOPMENT_TEAM = P66UA57R35;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.yamemo2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.apps.yamemo2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -511,7 +511,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4569D500BD5AC8DE4FCE5C2A /* devDebug.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = P3SP6B39C2;
+				DEVELOPMENT_TEAM = P66UA57R35;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Debug-dev";
@@ -520,7 +520,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AF58889B3E4CA6A679A1CE3C /* Pods-Runner.profile-dev.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = P3SP6B39C2;
+				DEVELOPMENT_TEAM = P66UA57R35;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Profile-dev";
@@ -529,7 +529,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 663724433D8E577F90AA024B /* Pods-Runner.release-dev.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = P3SP6B39C2;
+				DEVELOPMENT_TEAM = P66UA57R35;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Release-dev";
@@ -538,8 +538,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0B246CAA88107CA867C7C49B /* Pods-Runner.debug-prod.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = P3SP6B39C2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.yamemo2;
+				DEVELOPMENT_TEAM = P66UA57R35;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.apps.yamemo2;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Debug-prod";
@@ -548,8 +548,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CEC1AFA4B457D0CD8900EA7E /* Pods-Runner.profile-prod.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = P3SP6B39C2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.yamemo2;
+				DEVELOPMENT_TEAM = P66UA57R35;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.apps.yamemo2;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Profile-prod";
@@ -558,8 +558,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 933D16D90716D06BFD227F07 /* Pods-Runner.release-prod.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = P3SP6B39C2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.yamemo2;
+				DEVELOPMENT_TEAM = P66UA57R35;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.apps.yamemo2;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Release-prod";
@@ -821,14 +821,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = P3SP6B39C2;
+				DEVELOPMENT_TEAM = P66UA57R35;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.yamemo2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.apps.yamemo2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -844,14 +844,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = P3SP6B39C2;
+				DEVELOPMENT_TEAM = P66UA57R35;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.yamemo2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wakamenod.apps.yamemo2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
