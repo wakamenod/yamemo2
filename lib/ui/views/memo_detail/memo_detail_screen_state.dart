@@ -113,7 +113,7 @@ class MemoDetailScreenState extends State<MemoDetailScreen>
     );
   }
 
-  _onTextChanged(String text) {
+  void _onTextChanged(String text) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 500), () {
       getSaveFn().call();
@@ -234,8 +234,7 @@ class DoneEditButton extends StatelessWidget {
   final Function onTapDone;
   final MemoScreenViewModel model;
 
-  const DoneEditButton({Key? key, required this.onTapDone, required this.model})
-      : super(key: key);
+  const DoneEditButton({super.key, required this.onTapDone, required this.model});
 
   @override
   Widget build(BuildContext context) {

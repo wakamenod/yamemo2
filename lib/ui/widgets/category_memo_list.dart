@@ -10,7 +10,7 @@ import 'package:yamemo2/yamemo.i18n.dart';
 class CategoryMemoList extends StatelessWidget {
   final _model = serviceLocator<MemoScreenViewModel>();
 
-  CategoryMemoList({Key? key}) : super(key: key);
+  CategoryMemoList({super.key});
 
   static Route<Object?> _memoDetailNavigation(
           BuildContext context, Object? argument) =>
@@ -78,7 +78,7 @@ class CategoryMemoList extends StatelessWidget {
     );
   }
 
-  Future<bool> confirmDismissMemo(ctx, memo) async {
+  Future<bool> confirmDismissMemo(BuildContext ctx, Memo memo) async {
     return await showDialog(
         context: ctx,
         builder: (BuildContext context) {
@@ -92,6 +92,7 @@ class CategoryMemoList extends StatelessWidget {
                     _model.deleteMemo(memo).catchError((e) {
                       isError = true;
                     }).whenComplete(() {
+                      if (!context.mounted) return;
                       ScaffoldMessenger.of(context)
                           .showSnackBar(snackBarWhenComplete(isError));
                       Navigator.of(context).pop(true);

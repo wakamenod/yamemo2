@@ -41,17 +41,12 @@ script = '''
 fvm flutter analyze
 '''
 
-[tasks.metrics-analyze]
-script = '''
-fvm flutter pub run dart_code_metrics:metrics analyze lib
-'''
-
 [tasks.lint]
-dependencies = ["format", "analyze", "metrics-analyze"]
+dependencies = ["format", "analyze"]
 
 [tasks.format]
 script = '''
-fvm dart format --fix lib
+fvm dart format lib
 '''
 
 [tasks.test]

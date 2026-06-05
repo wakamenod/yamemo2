@@ -16,7 +16,7 @@ import 'package:yamemo2/utils/log.dart';
 class MemoListScreen extends StatefulWidget {
   static const id = 'list';
 
-  const MemoListScreen({Key? key}) : super(key: key);
+  const MemoListScreen({super.key});
 
   @override
   State<MemoListScreen> createState() => _MemoListScreenState();

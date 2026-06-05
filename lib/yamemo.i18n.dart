@@ -1,63 +1,63 @@
 import 'package:i18n_extension/i18n_extension.dart';
 
 extension Localization on String {
-  static final _t = Translations("en_us") +
+  static final _t = Translations.byText("en-US") +
       {
-        "en_us": "Add New Category",
-        "ja_jp": "新規カテゴリ追加",
+        "en-US": "Add New Category",
+        "ja-JP": "新規カテゴリ追加",
       } +
       {
-        "en_us": "CANCEL",
-        "ja_jp": "キャンセル",
+        "en-US": "CANCEL",
+        "ja-JP": "キャンセル",
       } +
       {
-        "en_us": "DELETE",
-        "ja_jp": "削除",
+        "en-US": "DELETE",
+        "ja-JP": "削除",
       } +
       {
-        "en_us": "Add",
-        "ja_jp": "追加",
+        "en-US": "Add",
+        "ja-JP": "追加",
       } +
       {
-        "en_us": "EDIT",
-        "ja_jp": "更新",
+        "en-US": "EDIT",
+        "ja-JP": "更新",
       } +
       {
-        "en_us": "Unexpected Error.",
-        "ja_jp": "予期しないエラーが発生しました",
+        "en-US": "Unexpected Error.",
+        "ja-JP": "予期しないエラーが発生しました",
       } +
       {
-        "en_us": "Deleted",
-        "ja_jp": "削除しました",
+        "en-US": "Deleted",
+        "ja-JP": "削除しました",
       } +
       {
-        "en_us": "Are you sure you wish to delete this memo?",
-        "ja_jp": "このメモを削除しますか?",
+        "en-US": "Are you sure you wish to delete this memo?",
+        "ja-JP": "このメモを削除しますか?",
       } +
       {
-        "en_us":
+        "en-US":
             "Are you sure you wish to delete this catgory and all memos in it?",
-        "ja_jp": "このカテゴリとカテゴリ内のメモを削除しますか?",
+        "ja-JP": "このカテゴリとカテゴリ内のメモを削除しますか?",
       } +
       {
-        "en_us": "Select Category",
-        "ja_jp": "カテゴリ選択",
+        "en-US": "Select Category",
+        "ja-JP": "カテゴリ選択",
       } +
       {
-        "en_us": "Edit Category",
-        "ja_jp": "カテゴリ編集",
+        "en-US": "Edit Category",
+        "ja-JP": "カテゴリ編集",
       } +
       {
-        "en_us": "Position: ",
-        "ja_jp": "タブ位置",
+        "en-US": "Position: ",
+        "ja-JP": "タブ位置",
       } +
       {
-        "en_us": "Name: ",
-        "ja_jp": "名前",
+        "en-US": "Name: ",
+        "ja-JP": "名前",
       } +
       {
-        "en_us": "Confirm",
-        "ja_jp": "確認",
+        "en-US": "Confirm",
+        "ja-JP": "確認",
       };
 
   String get i18n => localize(this, _t);
