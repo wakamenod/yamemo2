@@ -11,6 +11,10 @@ class MemoServiceSQLite extends MemoService {
   static const _tblCategory = "Category";
   static const _tblWritingMemoRecord = "WritingMemoRecord";
 
+  final String? _dbPath;
+
+  MemoServiceSQLite({String? dbPath}) : _dbPath = dbPath;
+
   late Future<List<Memo>> _memos = initMemos();
   late Future<List<MemoCategory>> _categories = initCategories();
   late final Future<Database> _database = initDB();
@@ -65,7 +69,8 @@ class MemoServiceSQLite extends MemoService {
   }
 
   Future<Database> initDB() async {
-    String path = p.join(await getDatabasesPath(), "yamemoapp_database.db");
+    String path =
+        _dbPath ?? p.join(await getDatabasesPath(), "yamemoapp_database.db");
 
     return await openDatabase(path,
         version: _currentVersion, onCreate: _createTable,
@@ -219,5 +224,72 @@ class MemoServiceSQLite extends MemoService {
     var res =
         db.delete(_tblMemo, where: "category_id = ?", whereArgs: [categoryID]);
     return res;
+  }
+
+  @override
+  Future<Map<String, dynamic>> exportBackup() async {
+    final db = await database;
+
+    final categoryRows = await db.query(_tblCategory, orderBy: "sort_no");
+    final memoRows = await db.query(_tblMemo, orderBy: "id");
+
+    return {
+      'version': 1,
+      'created_at': DateTime.now().toUtc().toIso8601String(),
+      'categories': categoryRows
+          .map((row) => {
+                'id': row['id'],
+                'title': row['title'],
+                'sort_no': row['sort_no'],
+              })
+          .toList(),
+      'memos': memoRows
+          .map((row) => {
+                'id': row['id'],
+                'category_id': row['category_id'],
+                'content': row['content'],
+              })
+          .toList(),
+    };
+  }
+
+  @override
+  Future<void> importBackup(Map<String, dynamic> data) async {
+    final db = await database;
+
+    final categories = data['categories'] as List<dynamic>;
+    final memos = data['memos'] as List<dynamic>;
+
+    await db.transaction((txn) async {
+      // 既存データを全削除
+      await txn.delete(_tblMemo);
+      await txn.delete(_tblCategory);
+
+      // Category をインサート
+      for (final cat in categories) {
+        await txn.insert(_tblCategory, {
+          'id': cat['id'],
+          'title': cat['title'],
+          'sort_no': cat['sort_no'],
+        });
+      }
+
+      // Memo をインサート
+      for (final memo in memos) {
+        await txn.insert(_tblMemo, {
+          'id': memo['id'],
+          'category_id': memo['category_id'],
+          'content': memo['content'],
+        });
+      }
+
+      // WritingMemoRecord をリセット
+      await txn.rawUpdate(
+          'UPDATE $_tblWritingMemoRecord SET memo_id = ?', [0]);
+    });
+
+    // キャッシュを再取得
+    _memos = initMemos();
+    _categories = initCategories();
   }
 }

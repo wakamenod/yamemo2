@@ -14,4 +14,10 @@ abstract class MemoService {
   Future updateCategorySortNos(int from, int to);
   Future<int> getWritingMemoID();
   Future updateWritingMemoRecord(int memoID);
+
+  /// 全Category・全MemoをJSON用Mapとしてエクスポートする
+  Future<Map<String, dynamic>> exportBackup();
+
+  /// JSON用Mapからデータをインポートし、既存データを置き換える
+  Future<void> importBackup(Map<String, dynamic> data);
 }
