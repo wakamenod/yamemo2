@@ -3,10 +3,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:file_selector/file_selector.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:yamemo2/constants.dart';
+import 'package:yamemo2/ui/theme/app_colors.dart';
+import 'package:yamemo2/ui/theme/app_spacing.dart';
 import 'package:yamemo2/business_logic/view_models/memo_screen_viewmodel.dart';
 import 'package:yamemo2/services/memo/memo_service.dart';
 import 'package:yamemo2/services/service_locator.dart';
@@ -25,6 +25,16 @@ class BackupScreen extends StatefulWidget {
 class _BackupScreenState extends State<BackupScreen> {
   final _memoService = serviceLocator<MemoService>();
   bool _isLoading = false;
+
+  void _notify(String message, {bool isError = false}) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: isError ? Theme.of(context).colorScheme.error : null,
+      ),
+    );
+  }
 
   Rect _getSharePositionOrigin(BuildContext context) {
     final box = context.findRenderObject() as RenderBox?;
@@ -62,14 +72,10 @@ class _BackupScreenState extends State<BackupScreen> {
         await file.delete();
       }
 
-      if (mounted) {
-        Fluttertoast.showToast(msg: 'Backup completed.'.i18n);
-      }
+      _notify('Backup completed.'.i18n);
     } catch (e) {
       LOG.info('Error exporting backup: $e');
-      if (mounted) {
-        Fluttertoast.showToast(msg: '${'Unexpected Error.'.i18n}\n$e');
-      }
+      _notify('${'Unexpected Error.'.i18n}\n$e', isError: true);
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);
@@ -101,7 +107,7 @@ class _BackupScreenState extends State<BackupScreen> {
     );
 
     if (confirmed != true) {
-      Fluttertoast.showToast(msg: 'Restore cancelled.'.i18n);
+      _notify('Restore cancelled.'.i18n);
       return;
     }
 
@@ -114,7 +120,7 @@ class _BackupScreenState extends State<BackupScreen> {
     final file = await openFile(acceptedTypeGroups: [typeGroup]);
 
     if (file == null) {
-      Fluttertoast.showToast(msg: 'Restore cancelled.'.i18n);
+      _notify('Restore cancelled.'.i18n);
       return;
     }
 
@@ -128,17 +134,13 @@ class _BackupScreenState extends State<BackupScreen> {
       // ViewModel を再読み込みしてUIに反映
       serviceLocator<MemoScreenViewModel>().loadData();
 
-      if (mounted) {
-        Fluttertoast.showToast(msg: 'Restore completed.'.i18n);
-        // Navigator.pop(context);
-      }
+      _notify('Restore completed.'.i18n);
     } catch (e) {
       LOG.info('Error importing backup: $e');
-      if (mounted) {
-        Fluttertoast.showToast(
-          msg: '${'Failed to restore. The file may be invalid.'.i18n}\n$e',
-        );
-      }
+      _notify(
+        '${'Failed to restore. The file may be invalid.'.i18n}\n$e',
+        isError: true,
+      );
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);
@@ -149,67 +151,43 @@ class _BackupScreenState extends State<BackupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: kBaseColor,
-        title: Text('Backup'.i18n),
-      ),
+      appBar: AppBar(title: Text('Backup'.i18n)),
       body: Stack(
         children: [
-          Container(
-            color: kBaseBgColor,
-            width: double.infinity,
-            padding: const EdgeInsets.all(16.0),
+          Padding(
+            padding: const EdgeInsets.all(AppSpacing.lg),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
                   'Backup description'.i18n,
-                  style: const TextStyle(fontSize: 16.0),
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                const SizedBox(height: 24.0),
-                // バックアップ作成ボタン
-                SizedBox(
-                  width: double.infinity,
-                  child: Builder(
-                    builder: (btnContext) => ElevatedButton.icon(
-                      onPressed: _isLoading
-                          ? null
-                          : () => _exportBackup(btnContext),
-                      icon: const Icon(Icons.backup),
-                      label: Text('Create Backup'.i18n),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: kBaseColor,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 14.0),
-                        textStyle: const TextStyle(fontSize: 16.0),
-                      ),
-                    ),
+                const SizedBox(height: AppSpacing.xl),
+                Builder(
+                  builder: (btnContext) => FilledButton.icon(
+                    onPressed: _isLoading
+                        ? null
+                        : () => _exportBackup(btnContext),
+                    icon: const Icon(Icons.backup_outlined),
+                    label: Text('Create Backup'.i18n),
                   ),
                 ),
-                const SizedBox(height: 16.0),
-                // バックアップから復元ボタン
-                SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton.icon(
-                    onPressed: _isLoading ? null : _importBackup,
-                    icon: const Icon(Icons.restore),
-                    label: Text('Restore from Backup'.i18n),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: kBaseColor,
-                      side: const BorderSide(color: kBaseColor),
-                      padding: const EdgeInsets.symmetric(vertical: 14.0),
-                      textStyle: const TextStyle(fontSize: 16.0),
-                    ),
-                  ),
+                const SizedBox(height: AppSpacing.md),
+                OutlinedButton.icon(
+                  onPressed: _isLoading ? null : _importBackup,
+                  icon: const Icon(Icons.restore),
+                  label: Text('Restore from Backup'.i18n),
                 ),
               ],
             ),
           ),
           if (_isLoading)
-            Container(
-              color: Colors.black26,
-              child: const Center(child: CircularProgressIndicator()),
+            const ColoredBox(
+              color: AppColors.scrim,
+              child: SizedBox.expand(
+                child: Center(child: CircularProgressIndicator()),
+              ),
             ),
         ],
       ),
