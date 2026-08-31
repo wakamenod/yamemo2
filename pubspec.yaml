@@ -138,4 +138,5 @@ flutter_launcher_icons:
   remove_alpha_ios: true
   image_path: "assets/icon/ios.png"
   adaptive_icon_foreground: "assets/icon/android.png"
-  adaptive_icon_background: "#FF9800"
+  # AppColors.brand と揃える（旧 #FF9800 は Material Orange でテーマの色ではなかった）
+  adaptive_icon_background: "#E58A2D"

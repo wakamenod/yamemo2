@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <!-- 地：ブランドオレンジ -->
+  <rect width="1024" height="1024" fill="#E58A2D"/>
+  <g transform="rotate(-5 512 512)">
+    <!-- カード本体（右下の角を折る） -->
+    <path d="M264 216 h496 a48 48 0 0 1 48 48 v420 l-172 172 h-372 a48 48 0 0 1 -48 -48 z"
+          fill="#FFFFFF"/>
+    <!-- 折り返した裏面 -->
+    <path d="M636 856 l172 -172 h-124 a48 48 0 0 0 -48 48 z" fill="#EFBE83"/>
+    <!-- 本文の行 -->
+    <g fill="#EAD3B2">
+      <rect x="344" y="356" width="336" height="34" rx="17"/>
+      <rect x="344" y="452" width="336" height="34" rx="17"/>
+      <rect x="344" y="548" width="216" height="34" rx="17"/>
+    </g>
+    <!-- 1 行目だけブランド色にしてアクセントにする -->
+    <rect x="344" y="356" width="176" height="34" rx="17" fill="#E58A2D"/>
+  </g>
+</svg>
