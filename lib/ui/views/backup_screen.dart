@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:yamemo2/ui/theme/app_colors.dart';
 import 'package:yamemo2/ui/theme/app_spacing.dart';
+import 'package:yamemo2/ui/widgets/content_frame.dart';
 import 'package:yamemo2/business_logic/view_models/memo_screen_viewmodel.dart';
 import 'package:yamemo2/services/memo/memo_service.dart';
 import 'package:yamemo2/services/service_locator.dart';
@@ -154,32 +155,34 @@ class _BackupScreenState extends State<BackupScreen> {
       appBar: AppBar(title: Text('Backup'.i18n)),
       body: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(AppSpacing.lg),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  'Backup description'.i18n,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                const SizedBox(height: AppSpacing.xl),
-                Builder(
-                  builder: (btnContext) => FilledButton.icon(
-                    onPressed: _isLoading
-                        ? null
-                        : () => _exportBackup(btnContext),
-                    icon: const Icon(Icons.backup_outlined),
-                    label: Text('Create Backup'.i18n),
+          ContentFrame(
+            child: Padding(
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    'Backup description'.i18n,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                ),
-                const SizedBox(height: AppSpacing.md),
-                OutlinedButton.icon(
-                  onPressed: _isLoading ? null : _importBackup,
-                  icon: const Icon(Icons.restore),
-                  label: Text('Restore from Backup'.i18n),
-                ),
-              ],
+                  const SizedBox(height: AppSpacing.xl),
+                  Builder(
+                    builder: (btnContext) => FilledButton.icon(
+                      onPressed: _isLoading
+                          ? null
+                          : () => _exportBackup(btnContext),
+                      icon: const Icon(Icons.backup_outlined),
+                      label: Text('Create Backup'.i18n),
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+                  OutlinedButton.icon(
+                    onPressed: _isLoading ? null : _importBackup,
+                    icon: const Icon(Icons.restore),
+                    label: Text('Restore from Backup'.i18n),
+                  ),
+                ],
+              ),
             ),
           ),
           if (_isLoading)

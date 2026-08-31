@@ -11,6 +11,10 @@ abstract final class AppSpacing {
 
   /// 一覧の最下部に確保する余白。FAB と広告バナーに最後の行が隠れないように。
   static const listBottomInset = 96.0;
+
+  /// 本文の最大幅。iPad のような横に広い画面で、カードや入力欄が
+  /// 画面幅いっぱいに間延びするのを防ぐ。[ContentFrame] から参照する。
+  static const maxContentWidth = 720.0;
 }
 
 /// 角丸のスケール。画面ごとにバラバラだった値をここに集約する。
