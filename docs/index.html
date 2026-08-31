@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YAMemo サポート</title>
+<meta name="description" content="メモアプリ YAMemo の使い方・よくある質問・お問い合わせ窓口。">
+<link rel="icon" href="icon.png">
+<style>
+  :root {
+    --brand: #E58A2D;
+    --brand-ink: #9E5310;
+    --brand-soft: #FDEBD6;
+    --bg: #FAF6F0;
+    --surface: #FFFFFF;
+    --ink: #2B2521;
+    --ink-muted: #756B64;
+    --hairline: #E8E1D6;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 0 1.25rem 4rem;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif;
+    font-size: 1rem;
+    line-height: 1.8;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .wrap { max-width: 42rem; margin: 0 auto; }
+
+  img { max-width: 100%; }
+
+  a { color: var(--brand-ink); }
+  a:hover { text-decoration: none; }
+
+  header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 2.5rem 0 1.5rem;
+  }
+  header img {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 1.125rem;
+    box-shadow: 0 1px 3px rgba(43, 37, 33, .18);
+  }
+  header h1 { margin: 0; font-size: 1.75rem; line-height: 1.3; }
+  header p { margin: .25rem 0 0; color: var(--ink-muted); font-size: .95rem; }
+
+  section {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: .75rem;
+    padding: 1.25rem 1.5rem 1.5rem;
+    margin: 0 0 1.25rem;
+  }
+  section h2 {
+    margin: 0 0 .25rem;
+    font-size: 1.15rem;
+    color: var(--brand-ink);
+  }
+  section h2 + p.lead { margin-top: 0; color: var(--ink-muted); font-size: .9rem; }
+
+  dl { margin: 1rem 0 0; }
+  dt {
+    margin-top: 1.125rem;
+    font-weight: 600;
+  }
+  dt:first-of-type { margin-top: 0; }
+  dd { margin: .125rem 0 0; }
+
+  .note {
+    margin-top: 1rem;
+    padding: .75rem 1rem;
+    background: var(--brand-soft);
+    border-radius: .5rem;
+    font-size: .925rem;
+  }
+
+  code {
+    font-size: .9em;
+    overflow-wrap: anywhere;
+  }
+
+  ul { padding-left: 1.25rem; }
+  li { margin: .25rem 0; }
+
+  .contact-mail {
+    display: inline-block;
+    margin: .25rem 0 .5rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    word-break: break-all;
+  }
+
+  footer {
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--hairline);
+    color: var(--ink-muted);
+    font-size: .875rem;
+  }
+  footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+  }
+  footer .updated { margin: 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <img src="icon.png" alt="YAMemo のアプリアイコン" width="80" height="80">
+    <div>
+      <h1>YAMemo サポート</h1>
+      <p>カテゴリごとに書き溜める、シンプルなメモ帳アプリ</p>
+    </div>
+  </header>
+
+  <section>
+    <h2>使い方</h2>
+    <dl>
+      <dt>カテゴリを作る</dt>
+      <dd>画面上部のタブの右端にある「＋」をタップし、名前を入力して「追加」を押します。</dd>
+
+      <dt>カテゴリの名前・並び順を変える／削除する</dt>
+      <dd>タブを長押しすると編集画面が開きます。名前の変更、スライダーでのタブ位置の変更、削除ができます。<strong>カテゴリを削除すると、その中のメモもすべて削除されます。</strong></dd>
+
+      <dt>メモを書く</dt>
+      <dd>右下の「＋」ボタンをタップして本文を入力します。入力内容は自動で保存されます。右上のチェックボタンでも保存できます。</dd>
+
+      <dt>メモのカテゴリを変える</dt>
+      <dd>メモを開き、画面上部に表示されているカテゴリ名をタップして、移動先のカテゴリを選びます。</dd>
+
+      <dt>メモを削除する</dt>
+      <dd>一覧でメモを右から左へスワイプし、確認ダイアログで「削除」を選びます。</dd>
+
+      <dt>メニューを開く</dt>
+      <dd>一覧画面の左上のメニューから、バックアップとライセンス表示にアクセスできます。アプリのバージョンもここに表示されます。</dd>
+    </dl>
+  </section>
+
+  <section>
+    <h2>バックアップと復元</h2>
+    <p class="lead">メニュー →「バックアップ」から操作します。</p>
+    <dl>
+      <dt>バックアップを作成する</dt>
+      <dd>「バックアップを作成」を押すと JSON ファイル（<code>yamemo_backup_日時.json</code>）が作られ、共有メニューが開きます。「ファイル」アプリや Google ドライブ、メールの下書きなど、あとから取り出せる場所に保存してください。</dd>
+
+      <dt>バックアップから復元する</dt>
+      <dd>「バックアップから復元」を押し、保存しておいた JSON ファイルを選びます。</dd>
+    </dl>
+    <p class="note"><strong>ご注意：</strong>復元すると、そのときアプリに入っているメモとカテゴリはすべて上書きされます。復元前に、念のため現在のデータのバックアップを取っておくことをおすすめします。</p>
+  </section>
+
+  <section>
+    <h2>よくある質問</h2>
+    <dl>
+      <dt>メモはどこに保存されますか？</dt>
+      <dd>お使いの端末の中だけに保存されます。メモの内容がサーバーに送信されることはなく、クラウド同期やアカウント登録の機能もありません。</dd>
+
+      <dt>機種変更するときはどうすればいいですか？</dt>
+      <dd>古い端末でバックアップを作成し、そのファイルを新しい端末に移してから復元してください。複数の端末で同じメモを自動的に同期することはできません。</dd>
+
+      <dt>アプリを削除するとメモはどうなりますか？</dt>
+      <dd>端末内のデータごと消えます。復元する手段はありませんので、アプリを削除する前に必ずバックアップを作成してください。</dd>
+
+      <dt>広告について教えてください。</dt>
+      <dd>一覧画面の下部にバナー広告を表示しています。広告を非表示にする有料プランは現在ご用意していません。</dd>
+
+      <dt>対応している言語は？</dt>
+      <dd>日本語と英語です。端末の言語設定に合わせて自動的に切り替わります。</dd>
+
+      <dt>使用しているオープンソースソフトウェアのライセンスは？</dt>
+      <dd>メニュー →「ライセンス」からご確認いただけます。</dd>
+    </dl>
+  </section>
+
+  <section>
+    <h2>お問い合わせ</h2>
+    <p>不具合のご報告、ご要望、その他のお問い合わせはこちらへどうぞ。数日以内にお返事します。</p>
+    <p><a class="contact-mail" href="mailto:wakamenod@gmail.com?subject=YAMemo%20%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">wakamenod@gmail.com</a></p>
+    <p>GitHub をお使いの方は <a href="https://github.com/wakamenod/yamemo2/issues">GitHub の Issues</a> からでも受け付けています。</p>
+    <p>不具合のご報告では、次の情報を教えていただけると調査がスムーズです。</p>
+    <ul>
+      <li>端末（例：iPhone 15、Pixel 8）と OS のバージョン</li>
+      <li>アプリのバージョン（メニューの上部に表示されています）</li>
+      <li>どの操作をしたときに、どうなったか</li>
+    </ul>
+  </section>
+
+  <footer>
+    <ul>
+      <li><a href="https://wakamenod.github.io/yamemo-privacy-policy/en">プライバシーポリシー</a></li>
+      <li><a href="en/">English</a></li>
+    </ul>
+    <p class="updated">最終更新：2026年8月31日</p>
+  </footer>
+
+</div>
+</body>
+</html>

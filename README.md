@@ -9,6 +9,13 @@
 ### Android
 <a href='https://play.google.com/store/apps/details?id=com.wakamenod.yamemo'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height='80px'/></a>
 
+## Support
+
+サポートページ（App Store Connect / Google Play のサポート URL 用）。`docs/` を GitHub Pages で配信している。
+
+- https://wakamenod.github.io/yamemo2/ （日本語）
+- https://wakamenod.github.io/yamemo2/en/ （English）
+
 ## Privacy Policies
 - https://github.com/wakamenod/yamemo-privacy-policy
 - https://wakamenod.github.io/yamemo-privacy-policy/en
