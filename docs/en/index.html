@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YAMemo Support</title>
+<meta name="description" content="Help, FAQ and contact information for the YAMemo note-taking app.">
+<link rel="icon" href="../icon.png">
+<style>
+  :root {
+    --brand: #E58A2D;
+    --brand-ink: #9E5310;
+    --brand-soft: #FDEBD6;
+    --bg: #FAF6F0;
+    --surface: #FFFFFF;
+    --ink: #2B2521;
+    --ink-muted: #756B64;
+    --hairline: #E8E1D6;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 0 1.25rem 4rem;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif;
+    font-size: 1rem;
+    line-height: 1.7;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .wrap { max-width: 42rem; margin: 0 auto; }
+
+  img { max-width: 100%; }
+
+  a { color: var(--brand-ink); }
+  a:hover { text-decoration: none; }
+
+  header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 2.5rem 0 1.5rem;
+  }
+  header img {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 1.125rem;
+    box-shadow: 0 1px 3px rgba(43, 37, 33, .18);
+  }
+  header h1 { margin: 0; font-size: 1.75rem; line-height: 1.3; }
+  header p { margin: .25rem 0 0; color: var(--ink-muted); font-size: .95rem; }
+
+  section {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: .75rem;
+    padding: 1.25rem 1.5rem 1.5rem;
+    margin: 0 0 1.25rem;
+  }
+  section h2 {
+    margin: 0 0 .25rem;
+    font-size: 1.15rem;
+    color: var(--brand-ink);
+  }
+  section h2 + p.lead { margin-top: 0; color: var(--ink-muted); font-size: .9rem; }
+
+  dl { margin: 1rem 0 0; }
+  dt {
+    margin-top: 1.125rem;
+    font-weight: 600;
+  }
+  dt:first-of-type { margin-top: 0; }
+  dd { margin: .125rem 0 0; }
+
+  .note {
+    margin-top: 1rem;
+    padding: .75rem 1rem;
+    background: var(--brand-soft);
+    border-radius: .5rem;
+    font-size: .925rem;
+  }
+
+  code {
+    font-size: .9em;
+    overflow-wrap: anywhere;
+  }
+
+  ul { padding-left: 1.25rem; }
+  li { margin: .25rem 0; }
+
+  .contact-mail {
+    display: inline-block;
+    margin: .25rem 0 .5rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    word-break: break-all;
+  }
+
+  footer {
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--hairline);
+    color: var(--ink-muted);
+    font-size: .875rem;
+  }
+  footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+  }
+  footer .updated { margin: 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <img src="../icon.png" alt="YAMemo app icon" width="80" height="80">
+    <div>
+      <h1>YAMemo Support</h1>
+      <p>A simple notepad that keeps your notes sorted into categories</p>
+    </div>
+  </header>
+
+  <section>
+    <h2>How to use</h2>
+    <dl>
+      <dt>Create a category</dt>
+      <dd>Tap the “+” at the right end of the tab bar at the top of the screen, type a name, and tap <em>Add</em>.</dd>
+
+      <dt>Rename, reorder or delete a category</dt>
+      <dd>Long-press a tab to open the edit dialog, where you can change its name, move it with the position slider, or delete it. <strong>Deleting a category also deletes every memo inside it.</strong></dd>
+
+      <dt>Write a memo</dt>
+      <dd>Tap the “+” button at the bottom right and start typing. Your text is saved automatically; the check button at the top right saves it as well.</dd>
+
+      <dt>Move a memo to another category</dt>
+      <dd>Open the memo and tap the category name shown at the top of the screen, then pick the category you want.</dd>
+
+      <dt>Delete a memo</dt>
+      <dd>Swipe the memo from right to left in the list, then confirm in the dialog.</dd>
+
+      <dt>Open the menu</dt>
+      <dd>The menu at the top left of the list screen gives you access to Backup and License, and shows the app version.</dd>
+    </dl>
+  </section>
+
+  <section>
+    <h2>Backup and restore</h2>
+    <p class="lead">Open the menu and tap <em>Backup</em>.</p>
+    <dl>
+      <dt>Create a backup</dt>
+      <dd>Tap <em>Create Backup</em>. A JSON file (<code>yamemo_backup_&lt;timestamp&gt;.json</code>) is created and the share sheet opens. Save it somewhere you can get it back from later — the Files app, Google Drive, an email draft, and so on.</dd>
+
+      <dt>Restore from a backup</dt>
+      <dd>Tap <em>Restore from Backup</em> and choose the JSON file you saved earlier.</dd>
+    </dl>
+    <p class="note"><strong>Please note:</strong> restoring overwrites every memo and category currently in the app. We recommend backing up your current data first, just in case.</p>
+  </section>
+
+  <section>
+    <h2>Frequently asked questions</h2>
+    <dl>
+      <dt>Where are my memos stored?</dt>
+      <dd>Only on your device. Memo contents are never sent to a server, and the app has no cloud sync or account sign-up.</dd>
+
+      <dt>How do I move my memos to a new device?</dt>
+      <dd>Create a backup on the old device, transfer the file to the new one, and restore it there. The app cannot sync the same memos across devices automatically.</dd>
+
+      <dt>What happens to my memos if I delete the app?</dt>
+      <dd>They are deleted along with the app’s data on your device, and there is no way to recover them. Always create a backup before deleting the app.</dd>
+
+      <dt>What about ads?</dt>
+      <dd>A banner ad is shown at the bottom of the list screen. There is currently no paid option to remove ads.</dd>
+
+      <dt>Which languages are supported?</dt>
+      <dd>English and Japanese. The app follows your device’s language setting.</dd>
+
+      <dt>Where can I see the open-source licenses?</dt>
+      <dd>Open the menu and tap <em>License</em>.</dd>
+    </dl>
+  </section>
+
+  <section>
+    <h2>Contact</h2>
+    <p>For bug reports, feature requests or any other question, please get in touch. We usually reply within a few days.</p>
+    <p><a class="contact-mail" href="mailto:wakamenod@gmail.com?subject=About%20YAMemo">wakamenod@gmail.com</a></p>
+    <p>If you use GitHub, you can also open an issue on <a href="https://github.com/wakamenod/yamemo2/issues">GitHub Issues</a>.</p>
+    <p>When reporting a problem, the following details help a lot:</p>
+    <ul>
+      <li>Your device (e.g. iPhone 15, Pixel 8) and OS version</li>
+      <li>The app version (shown at the top of the menu)</li>
+      <li>What you did, and what happened instead</li>
+    </ul>
+  </section>
+
+  <footer>
+    <ul>
+      <li><a href="https://wakamenod.github.io/yamemo-privacy-policy/en">Privacy Policy</a></li>
+      <li><a href="../">日本語</a></li>
+    </ul>
+    <p class="updated">Last updated: August 31, 2026</p>
+  </footer>
+
+</div>
+</body>
+</html>
