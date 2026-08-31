@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:yamemo2/business_logic/models/memo.dart';
 import 'package:yamemo2/business_logic/view_models/memo_screen_viewmodel.dart';
-import 'package:yamemo2/constants.dart';
 import 'package:yamemo2/services/service_locator.dart';
+import 'package:yamemo2/ui/theme/app_spacing.dart';
 import 'package:yamemo2/ui/views/memo_detail/memo_detail_screen.dart';
+import 'package:yamemo2/ui/widgets/empty_memo_view.dart';
+import 'package:yamemo2/ui/widgets/memo_list_tile.dart';
 import 'package:yamemo2/utils/log.dart';
 import 'package:yamemo2/yamemo.i18n.dart';
 
@@ -12,65 +14,44 @@ class CategoryMemoList extends StatelessWidget {
 
   CategoryMemoList({super.key});
 
-  static Route<Object?> _memoDetailNavigation(
-    BuildContext context,
-    Object? argument,
-  ) => PageRouteBuilder(
-    pageBuilder: (context, anim1, anim2) => const MemoDetailScreen(),
-    transitionDuration: const Duration(seconds: 0),
-  );
-
   @override
   Widget build(BuildContext context) {
     LOG.info('build isloading = ${_model.isLoading}');
     if (_model.isLoading) {
-      return Container(color: kBaseBgColor);
+      return const Center(child: CircularProgressIndicator());
     }
 
     final category = _model.selectedCategory;
-    return Container(
-      color: kBaseBgColor,
-      child: ListView.builder(
-        shrinkWrap: true,
-        itemCount: category.memoCount,
-        itemBuilder: (BuildContext ctx, int idx) {
-          final Memo memo = category.getMemoAt(idx);
+    if (category.memoCount == 0) {
+      return const EmptyMemoView();
+    }
 
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Dismissible(
-              confirmDismiss: (direction) => confirmDismissMemo(context, memo),
-              key: Key(memo.id.toString()),
-              background: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.redAccent,
-                  borderRadius: BorderRadius.all(Radius.circular(3.0)),
-                ),
-              ),
-              child: GestureDetector(
-                onTap: () async {
-                  _model.selectMemo(memo);
-                  Navigator.restorablePush(context, _memoDetailNavigation);
-                },
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(3.0)),
-                  ),
-                  child: ListTile(
-                    leading: Text(
-                      memo.content,
-                      textAlign: TextAlign.start,
-                      style: const TextStyle(fontSize: 14.0, height: 1.0),
-                      strutStyle: const StrutStyle(fontSize: 14.0, height: 0.2),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
+    return ListView.separated(
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.lg,
+        AppSpacing.md,
+        AppSpacing.lg,
+        AppSpacing.listBottomInset,
       ),
+      itemCount: category.memoCount,
+      separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
+      itemBuilder: (BuildContext ctx, int idx) {
+        final Memo memo = category.getMemoAt(idx);
+
+        return Dismissible(
+          key: Key(memo.id.toString()),
+          direction: DismissDirection.endToStart,
+          confirmDismiss: (direction) => confirmDismissMemo(context, memo),
+          background: const MemoDismissBackground(),
+          child: MemoListTile(
+            memo: memo,
+            onTap: () {
+              _model.selectMemo(memo);
+              Navigator.restorablePush(context, memoDetailRoute);
+            },
+          ),
+        );
+      },
     );
   }
 
@@ -83,6 +64,13 @@ class CategoryMemoList extends StatelessWidget {
           content: Text("Are you sure you wish to delete this memo?".i18n),
           actions: <Widget>[
             TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text("CANCEL".i18n),
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Theme.of(context).colorScheme.error,
+              ),
               onPressed: () {
                 var isError = false;
                 _model
@@ -94,15 +82,11 @@ class CategoryMemoList extends StatelessWidget {
                       if (!context.mounted) return;
                       ScaffoldMessenger.of(
                         context,
-                      ).showSnackBar(snackBarWhenComplete(isError));
+                      ).showSnackBar(snackBarWhenComplete(context, isError));
                       Navigator.of(context).pop(true);
                     });
               },
               child: Text("DELETE".i18n),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text("CANCEL".i18n),
             ),
           ],
         );
@@ -110,11 +94,11 @@ class CategoryMemoList extends StatelessWidget {
     );
   }
 
-  SnackBar snackBarWhenComplete(bool isError) {
+  SnackBar snackBarWhenComplete(BuildContext context, bool isError) {
     return isError
         ? SnackBar(
             content: Text("Unexpected Error.".i18n),
-            backgroundColor: Colors.redAccent,
+            backgroundColor: Theme.of(context).colorScheme.error,
           )
         : SnackBar(content: Text("Deleted".i18n));
   }

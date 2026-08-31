@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
 import 'package:yamemo2/business_logic/models/memo_category.dart';
 import 'package:yamemo2/business_logic/view_models/memo_screen_viewmodel.dart';
-import 'package:yamemo2/constants.dart';
 import 'package:yamemo2/services/service_locator.dart';
+import 'package:yamemo2/ui/theme/app_spacing.dart';
 import 'package:yamemo2/yamemo.i18n.dart';
 
 class CategoryEditDialog extends StatefulWidget {
@@ -33,117 +33,80 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SimpleDialog(
+    final theme = Theme.of(context);
+    final canDelete = _model.categoryCount > 1;
+
+    return AlertDialog(
       title: Text("Edit Category".i18n),
-      children: [
-        buildCategoryNameEdit(controller: controller),
-        buildCategoryIndexEdit(
-          position: selectedPosition,
-          max: _model.categoryCount,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton(
-                onPressed: _model.categoryCount <= 1
-                    ? null
-                    : () {
-                        Navigator.of(context).pop(true);
-                        showDeleteCategoryConfirmDialog(
-                          context,
-                          widget.baseContext,
-                          widget.category,
-                        );
-                      },
-                child: Text(
-                  "DELETE".i18n,
-                  style: TextStyle(
-                    color: _model.categoryCount <= 1 ? Colors.grey : Colors.red,
-                  ),
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  _model
-                      .updateCategory(controller.text, selectedPosition)
-                      .catchError((e) {
-                        if (!context.mounted) return;
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text("Unexpected Error.".i18n),
-                            backgroundColor: Colors.redAccent,
-                          ),
-                        );
-                      })
-                      .whenComplete(() {
-                        if (!context.mounted) return;
-                        Navigator.of(widget.baseContext).pop(true);
-                      });
-                },
-                child: Text("EDIT".i18n),
-              ),
-            ],
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text("Name: ".i18n, style: theme.textTheme.bodySmall),
+          TextField(autofocus: true, controller: controller),
+          const SizedBox(height: AppSpacing.lg),
+          Text("Position: ".i18n, style: theme.textTheme.bodySmall),
+          SpinBox(
+            value: selectedPosition.toDouble(),
+            max: _model.categoryCount.toDouble(),
+            min: 1,
+            onChanged: (val) => selectedPosition = val.toInt(),
+            decoration: const InputDecoration(
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              border: InputBorder.none,
+            ),
           ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          style: TextButton.styleFrom(
+            foregroundColor: canDelete
+                ? theme.colorScheme.error
+                : theme.disabledColor,
+          ),
+          onPressed: canDelete
+              ? () {
+                  Navigator.of(context).pop(true);
+                  showDeleteCategoryConfirmDialog(
+                    context,
+                    widget.baseContext,
+                    widget.category,
+                  );
+                }
+              : null,
+          child: Text("DELETE".i18n),
+        ),
+        FilledButton(
+          style: FilledButton.styleFrom(minimumSize: const Size(88, 40)),
+          onPressed: () {
+            _model
+                .updateCategory(controller.text, selectedPosition)
+                .catchError((e) {
+                  if (!context.mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Unexpected Error.".i18n),
+                      backgroundColor: theme.colorScheme.error,
+                    ),
+                  );
+                })
+                .whenComplete(() {
+                  if (!context.mounted) return;
+                  Navigator.of(widget.baseContext).pop(true);
+                });
+          },
+          child: Text("EDIT".i18n),
         ),
       ],
-    );
-  }
-
-  Widget buildCategoryNameEdit({required TextEditingController controller}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-      child: Row(
-        children: [
-          Expanded(child: Text("Name: ".i18n)),
-          SizedBox(
-            width: 150,
-            child: TextField(
-              autofocus: true,
-              textAlign: TextAlign.center,
-              controller: controller,
-              decoration: const InputDecoration(
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: kBaseColor),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: kBaseColor),
-                ),
-                border: UnderlineInputBorder(
-                  borderSide: BorderSide(color: kBaseColor),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildCategoryIndexEdit({required int max, required int position}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-      child: Row(
-        children: [
-          Expanded(child: Text("Position: ".i18n)),
-          SizedBox(
-            width: 150,
-            child: SpinBox(
-              onChanged: (val) => {selectedPosition = val.toInt()},
-              value: position.toDouble(),
-              max: max.toDouble(),
-              min: 1,
-              decoration: const InputDecoration(
-                enabledBorder: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                border: InputBorder.none,
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -163,6 +126,13 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
           ),
           actions: <Widget>[
             TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: Text("CANCEL".i18n),
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Theme.of(dialogContext).colorScheme.error,
+              ),
               onPressed: () {
                 var isError = false;
                 _model
@@ -173,16 +143,12 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
                     .whenComplete(() {
                       if (!dialogContext.mounted) return;
                       Navigator.of(dialogContext).pop(true);
-                      ScaffoldMessenger.of(
-                        dialogContext,
-                      ).showSnackBar(snackBarWhenComplete(isError));
+                      ScaffoldMessenger.of(dialogContext).showSnackBar(
+                        snackBarWhenComplete(dialogContext, isError),
+                      );
                     });
               },
               child: Text("DELETE".i18n),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(dialogContext).pop(false),
-              child: Text("CANCEL".i18n),
             ),
           ],
         );
@@ -190,11 +156,11 @@ class _CategoryEditDialogState extends State<CategoryEditDialog> {
     );
   }
 
-  SnackBar snackBarWhenComplete(bool isError) {
+  SnackBar snackBarWhenComplete(BuildContext context, bool isError) {
     return isError
         ? SnackBar(
             content: Text("Unexpected Error.".i18n),
-            backgroundColor: Colors.redAccent,
+            backgroundColor: Theme.of(context).colorScheme.error,
           )
         : SnackBar(content: Text("Deleted".i18n));
   }

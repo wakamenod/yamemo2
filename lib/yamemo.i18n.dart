@@ -41,7 +41,15 @@ extension Localization on String {
         "en-US": "Failed to restore. The file may be invalid.",
         "ja-JP": "復元に失敗しました。ファイルが不正な可能性があります。",
       } +
-      {"en-US": "Restore", "ja-JP": "復元"};
+      {"en-US": "Restore", "ja-JP": "復元"} +
+      {"en-US": "Menu", "ja-JP": "メニュー"} +
+      {"en-US": "License", "ja-JP": "ライセンス"} +
+      {"en-US": "Enter content", "ja-JP": "内容を入力"} +
+      {"en-US": "Untitled", "ja-JP": "無題"} +
+      {"en-US": "Done", "ja-JP": "完了"} +
+      {"en-US": "No memos yet", "ja-JP": "メモがありません"} +
+      {"en-US": "Tap the + button to add one.", "ja-JP": "＋ボタンから追加できます"} +
+      {"en-US": "Category", "ja-JP": "カテゴリ"};
 
   String get i18n => localize(this, _t);
 }

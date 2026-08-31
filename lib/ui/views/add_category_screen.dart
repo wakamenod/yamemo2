@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:yamemo2/ui/theme/app_spacing.dart';
 import 'package:yamemo2/yamemo.i18n.dart';
-import 'package:yamemo2/constants.dart';
 
 class AddCategoryScreen extends StatefulWidget {
   final Function(String) onAddCateogry;
@@ -19,56 +19,47 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
     super.dispose();
   }
 
+  void _submit() {
+    final title = _controller.text.trim();
+    if (title.isEmpty) return;
+    widget.onAddCateogry(title);
+    Navigator.pop(context, title);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.8,
-        child: Container(
-          padding: const EdgeInsets.all(20.0),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20.0),
-              topRight: Radius.circular(20.0),
-            ),
+    final theme = Theme.of(context);
+
+    // 旧実装は高さを画面の 80% に固定していて、テキストフィールド 1 つに対して
+    // 白い余白が大量に余っていた。内容の高さ＋キーボード分だけを取る。
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+      ),
+      child: SafeArea(
+        top: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(
+            AppSpacing.xl,
+            0,
+            AppSpacing.xl,
+            AppSpacing.xl,
           ),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                'Add New Category'.i18n,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 30.0, color: kBaseColor),
-              ),
+              Text('Add New Category'.i18n, style: theme.textTheme.titleLarge),
+              const SizedBox(height: AppSpacing.lg),
               TextField(
                 autofocus: true,
-                textAlign: TextAlign.center,
                 controller: _controller,
-                decoration: const InputDecoration(
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: kBaseColor),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: kBaseColor),
-                  ),
-                  border: UnderlineInputBorder(
-                    borderSide: BorderSide(color: kBaseColor),
-                  ),
-                ),
+                textInputAction: TextInputAction.done,
+                onSubmitted: (_) => _submit(),
+                decoration: InputDecoration(hintText: 'Category'.i18n),
               ),
-              TextButton(
-                style: TextButton.styleFrom(backgroundColor: kBaseColor),
-                onPressed: () {
-                  widget.onAddCateogry(_controller.text);
-                  Navigator.pop(context, _controller.text);
-                },
-                child: Text(
-                  'Add'.i18n,
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ),
+              const SizedBox(height: AppSpacing.xl),
+              FilledButton(onPressed: _submit, child: Text('Add'.i18n)),
             ],
           ),
         ),

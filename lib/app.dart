@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:i18n_extension/i18n_extension.dart';
 
 import 'flavors.dart';
+import 'ui/theme/app_theme.dart';
 import 'ui/views/backup_screen.dart';
 import 'ui/views/memo_list_screen.dart';
 
@@ -18,13 +18,7 @@ class App extends StatelessWidget {
         title: 'YAMemo',
         restorationScopeId: 'root',
         locale: I18n.locale,
-        theme: ThemeData(
-          primarySwatch: Colors.orange,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          textTheme: GoogleFonts.zenMaruGothicTextTheme(
-            Theme.of(context).textTheme,
-          ),
-        ),
+        theme: AppTheme.light,
         routes: {
           MemoListScreen.id: (context) => const MemoListScreen(),
           BackupScreen.id: (context) => const BackupScreen(),
