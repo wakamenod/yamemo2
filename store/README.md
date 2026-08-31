@@ -2,14 +2,25 @@
 
 ## スクリーンショット
 
-| ディレクトリ | 端末 | 解像度 |
-| --- | --- | --- |
-| `screenshots/iphone-6.9` | iPhone 17 Pro Max | 1320 × 2868 |
-| `screenshots/ipad-13` | iPad Pro 13-inch (M5) | 2064 × 2752 |
+| ディレクトリ | 撮影に使う端末 | 解像度 | App Store Connect のスロット |
+| --- | --- | --- | --- |
+| `screenshots/iphone-6.9` | iPhone 17 Pro Max | 1320 × 2868 | 6.9 インチディスプレイ |
+| `screenshots/iphone-6.5` | iPhone 14 Plus | 1284 × 2778 | 6.5 インチディスプレイ |
+| `screenshots/ipad-13` | iPad Pro 13-inch (M5) | 2064 × 2752 | 13 インチディスプレイ |
 
-iPhone は 6.9 インチ、iPad は 13 インチが App Store Connect の必須サイズ。
-これより小さい端末向けは Apple 側で縮小されるので、この 2 種類を用意すれば足りる
-（必須サイズの規定は変わることがあるので、最終的には App Store Connect の表示に従うこと）。
+スロットごとに受け付ける寸法が違い、6.9 インチ用の 1320 × 2868 を
+6.5 インチのスロットに入れると「寸法が正しくありません」と警告が出る
+（6.5 インチが受け付けるのは 1242 × 2688 か 1284 × 2778）。
+どのスロットが表示されるかは App Store Connect 側の仕様変更で変わるので、
+最終的には画面の表示に従うこと。
+
+6.5 インチ用のシミュレータは既定では入っていないので、必要なら作る:
+
+```sh
+xcrun simctl create "YAMemo Shot 6.5" \
+  com.apple.CoreSimulator.SimDeviceType.iPhone-14-Plus \
+  com.apple.CoreSimulator.SimRuntime.iOS-26-5
+```
 
 1024×1024 のマーケティング用アイコンはアセットカタログから読まれるため、
 ここに置く必要はない。
