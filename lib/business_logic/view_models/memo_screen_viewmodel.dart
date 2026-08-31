@@ -154,6 +154,11 @@ class MemoScreenViewModel extends ChangeNotifier {
     memoMap["content"] = content;
     memoMap["category_id"] = categoryID;
 
+    // メモリ上の選択中メモも揃えておく。放置すると詳細画面の再ビルドで
+    // controller に保存前の内容が書き戻される。
+    _selectedMemo.content = content;
+    _selectedMemo.categoryID = categoryID;
+
     await _memoService
         .updateMemo(memoMap)
         .catchError((e) {

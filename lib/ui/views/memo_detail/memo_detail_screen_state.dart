@@ -36,29 +36,27 @@ class MemoDetailScreenState extends State<MemoDetailScreen>
     );
   }
 
-  void Function() getSaveFn() {
-    if (!_model.isMemoSelected()) {
-      return () async {
-        try {
-          final newMemo = await _model.addMemo(controller.value.text);
-          _model.updateWritingMemoRecord(newMemo.id ?? 0);
-          _model.selectMemo(newMemo);
-        } catch (e) {
-          LOG.info('Error saving memo: $e');
-          _showError(e);
-        }
-      };
-    }
-
-    return () async {
-      try {
-        _model.updateWritingMemoRecord(_model.selectedMemo.id ?? 0);
-        _model.updateSelectedMemo(controller.value.text);
-      } catch (e) {
-        LOG.info('Error saving memo: $e');
-        _showError(e);
+  /// 現在の入力内容と選択中カテゴリを保存する。
+  ///
+  /// NOTE: 旧実装は「保存関数を返す getSaveFn()」で、呼び出し側が `.call()` を
+  /// 忘れると何も起きなかった（チェックボタンが実際にそうなっていた）。
+  /// 呼べば保存されるメソッドにして再発を防ぐ。
+  Future<void> save() async {
+    // 直後に同じ内容をもう一度書きに行かないようにする。
+    _debounce?.cancel();
+    try {
+      if (!_model.isMemoSelected()) {
+        final newMemo = await _model.addMemo(controller.value.text);
+        await _model.updateWritingMemoRecord(newMemo.id ?? 0);
+        _model.selectMemo(newMemo);
+      } else {
+        await _model.updateWritingMemoRecord(_model.selectedMemo.id ?? 0);
+        await _model.updateSelectedMemo(controller.value.text);
       }
-    };
+    } catch (e) {
+      LOG.info('Error saving memo: $e');
+      _showError(e);
+    }
   }
 
   static void popDetailPage(BuildContext context, MemoScreenViewModel model) {
@@ -90,7 +88,7 @@ class MemoDetailScreenState extends State<MemoDetailScreen>
                 },
               ),
               actions: <Widget>[
-                DoneEditButton(model: _model, onTapDone: () => getSaveFn()),
+                DoneEditButton(model: _model, onTapDone: save),
                 const SizedBox(width: AppSpacing.xs),
               ],
             ),
@@ -126,7 +124,7 @@ class MemoDetailScreenState extends State<MemoDetailScreen>
   void _onTextChanged(String text) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 500), () {
-      getSaveFn().call();
+      save();
     });
   }
 
@@ -194,7 +192,14 @@ class MemoDetailScreenState extends State<MemoDetailScreen>
       return SimpleDialogOption(
         onPressed: () async {
           model.selectCategoryAt(index);
-          popDetailPage(context, model);
+          // NOTE: 閉じるのはダイアログだけ。旧実装は popDetailPage を呼んでおり、
+          // その中の deselectMemo() で編集対象を見失って保存が新規追加扱いになっていた。
+          Navigator.pop(context);
+          // 既存メモは選んだ時点で移動を確定させる（本文の自動保存と同じ経路）。
+          // 未保存の新規メモは、最初の入力時に addMemo がこのカテゴリを使う。
+          if (model.isMemoSelected()) {
+            await save();
+          }
         },
         child: Row(
           children: [
@@ -338,7 +343,7 @@ class _CategoryPickerButton extends StatelessWidget {
 }
 
 class DoneEditButton extends StatelessWidget {
-  final Function onTapDone;
+  final Future<void> Function() onTapDone;
   final MemoScreenViewModel model;
 
   const DoneEditButton({
@@ -352,8 +357,12 @@ class DoneEditButton extends StatelessWidget {
     return IconButton(
       icon: const Icon(Icons.check),
       tooltip: 'Done'.i18n,
-      onPressed: () {
-        onTapDone();
+      // 保存を待ってから閉じる。待たないと、新規メモの selectMemo() が
+      // popDetailPage の deselectMemo() より後に走り、画面を離れた後に
+      // 選択状態が復活してしまう。
+      onPressed: () async {
+        await onTapDone();
+        if (!context.mounted) return;
         MemoDetailScreenState.popDetailPage(context, model);
       },
     );
