@@ -15,7 +15,14 @@ fvm flutter pub get
 script = '''
 unset CC CXX
 fvm flutter run --flavor prod -t lib/main-prod.dart
+  '''
+
+[tasks.run-release]
+script = '''
+unset CC CXX
+fvm flutter run --flavor prod -t lib/main-prod.dart
 '''
+
 [tasks.doctor]
 script = '''
 fvm flutter doctor
