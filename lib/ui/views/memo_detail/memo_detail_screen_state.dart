@@ -7,6 +7,7 @@ import 'package:yamemo2/services/service_locator.dart';
 import 'package:yamemo2/ui/theme/app_spacing.dart';
 import 'package:yamemo2/ui/views/add_category_screen.dart';
 import 'package:yamemo2/ui/views/memo_detail/memo_detail_screen.dart';
+import 'package:yamemo2/ui/widgets/content_frame.dart';
 import 'package:yamemo2/yamemo.i18n.dart';
 import 'package:yamemo2/utils/log.dart';
 
@@ -92,28 +93,30 @@ class MemoDetailScreenState extends State<MemoDetailScreen>
                 const SizedBox(width: AppSpacing.xs),
               ],
             ),
-            body: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    AppSpacing.lg,
-                    AppSpacing.md,
-                    AppSpacing.lg,
-                    AppSpacing.md,
+            body: ContentFrame(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                      AppSpacing.lg,
+                      AppSpacing.md,
+                      AppSpacing.lg,
+                      AppSpacing.md,
+                    ),
+                    child: _CategoryPickerButton(
+                      title: value.selectedCategory.title,
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => buildDialog(value, context),
+                        );
+                      },
+                    ),
                   ),
-                  child: _CategoryPickerButton(
-                    title: value.selectedCategory.title,
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => buildDialog(value, context),
-                      );
-                    },
-                  ),
-                ),
-                buildContentForm(),
-              ],
+                  buildContentForm(),
+                ],
+              ),
             ),
           );
         },
