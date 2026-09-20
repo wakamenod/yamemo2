@@ -86,6 +86,9 @@ class _MemoListScreenState extends State<MemoListScreen>
               body: Center(child: CircularProgressIndicator()),
             );
           }
+          if (value.hasLoadError) {
+            return const Scaffold(body: _LoadErrorView());
+          }
           // NOTE: CategoryTabBar / CategoryMemoList は Provider を購読せず
           // serviceLocator から直接 ViewModel を掴んでいる。この Consumer の
           // builder 内で毎回生成すること。const 化したり Consumer の child:
@@ -185,6 +188,49 @@ class _MemoListScreenState extends State<MemoListScreen>
       width: bannerAd.size.width.toDouble(),
       height: bannerAd.size.height.toDouble(),
       child: AdWidget(ad: bannerAd),
+    );
+  }
+}
+
+/// DBを開けなかったときの表示。
+///
+/// 空の一覧を見せるとメモが消えたと誤解され、アプリを削除されかねない。
+/// 削除しないよう明示する。
+class _LoadErrorView extends StatelessWidget {
+  const _LoadErrorView();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.xl),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.error_outline,
+              size: 48,
+              color: theme.colorScheme.error,
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            Text(
+              'Could not open your memos.'.i18n,
+              style: theme.textTheme.titleMedium,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              'Your memos are still on this device. Do not delete the app. '
+                      'Please restart it and try again.'
+                  .i18n,
+              style: theme.textTheme.bodyMedium,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

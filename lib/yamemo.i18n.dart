@@ -9,6 +9,16 @@ extension Localization on String {
       {"en-US": "Add", "ja-JP": "追加"} +
       {"en-US": "EDIT", "ja-JP": "更新"} +
       {"en-US": "Unexpected Error.", "ja-JP": "予期しないエラーが発生しました"} +
+      {
+        "en-US": "Could not open your memos.",
+        "ja-JP": "メモを開けませんでした",
+      } +
+      {
+        "en-US":
+            "Your memos are still on this device. Do not delete the app. "
+            "Please restart it and try again.",
+        "ja-JP": "メモは端末内に残っています。アプリを削除すると失われるため、削除せずに再起動をお試しください。",
+      } +
       {"en-US": "Deleted", "ja-JP": "削除しました"} +
       {
         "en-US": "Are you sure you wish to delete this memo?",
