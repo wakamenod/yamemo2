@@ -50,6 +50,8 @@ dependencies:
   share_plus: ^4.5.3
   file_selector: ^1.0.0
   path_provider: ^2.1.0
+  # App Group共有コンテナのパス取得 (getContainerPath) に使う
+  path_provider_foundation: ^2.3.2
   flutter_launcher_icons: ^0.14.4
 
 dev_dependencies:

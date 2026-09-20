@@ -1,9 +1,9 @@
 import 'package:yamemo2/business_logic/models/memo_category.dart';
 import 'package:yamemo2/business_logic/models/memo.dart';
 import 'package:yamemo2/utils/log.dart';
+import 'db_location.dart';
 import 'memo_service.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart' as p;
 
 class MemoServiceSQLite extends MemoService {
   static const _currentVersion = 3;
@@ -70,8 +70,7 @@ class MemoServiceSQLite extends MemoService {
   }
 
   Future<Database> initDB() async {
-    String path =
-        _dbPath ?? p.join(await getDatabasesPath(), "yamemoapp_database.db");
+    String path = _dbPath ?? await resolveDatabasePath();
 
     return await openDatabase(
       path,
