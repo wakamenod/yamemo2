@@ -91,6 +91,18 @@ void main() {
       expect(await File(sharedPath).exists(), isFalse);
     });
 
+    test('移行済みマーカーを付けた後は再度コピーしない前提で、マーカーは旧パス側に作られる', () async {
+      await File(legacyPath).writeAsString('memo db');
+      await migrateDatabaseIfNeeded(
+        legacyPath: legacyPath,
+        sharedPath: sharedPath,
+      );
+
+      await markMigrated(legacyPath);
+
+      expect(await File('$legacyPath$migratedMarkerSuffix').exists(), isTrue);
+    });
+
     test('コピーに失敗したら旧パスへフォールバックし、壊れたDBを残さない', () async {
       await File(legacyPath).writeAsString('memo db');
       // 共有コンテナのパスにディレクトリを作っておき、コピーを失敗させる
@@ -104,6 +116,14 @@ void main() {
         isFalse,
       );
       expect(await File(legacyPath).readAsString(), 'memo db');
+    });
+  });
+
+  group('SharedContainerUnavailableException', () {
+    test('App Group IDがメッセージに含まれる', () {
+      final e = SharedContainerUnavailableException(appGroupID);
+
+      expect(e.toString(), contains(appGroupID));
     });
   });
 }

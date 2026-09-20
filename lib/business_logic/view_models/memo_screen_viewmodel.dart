@@ -10,6 +10,9 @@ class MemoScreenViewModel extends ChangeNotifier {
   List<MemoCategory> _categories = [];
   final List<Memo> _memos = [];
   bool isLoading = true;
+
+  /// DBを開けなかった場合に立つ。UIはこのとき一覧ではなくエラーを出す。
+  bool hasLoadError = false;
   Future<List<MemoCategory>>? futureCategories;
   MemoCategory _selectedCategory = MemoCategory.nullCategory;
   Memo _selectedMemo = Memo.nullMemo;
@@ -17,7 +20,19 @@ class MemoScreenViewModel extends ChangeNotifier {
   void loadData() async {
     LOG.info('loadData');
     isLoading = true;
-    _categories = await _memoService.getAllCategories(true);
+    hasLoadError = false;
+
+    try {
+      _categories = await _memoService.getAllCategories(true);
+    } catch (e) {
+      // DBを開けないケース。空の一覧を見せるとデータが消えたように見えるので、
+      // エラーとして表示する。
+      LOG.shout('メモの読み込みに失敗した: $e');
+      hasLoadError = true;
+      isLoading = false;
+      notifyListeners();
+      return;
+    }
 
     if (_categories.isEmpty) {
       addCategory("New Category");
